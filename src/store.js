@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import loginApi from "./api/LoginApi";
 import searchApi from "./api/SearchApi";
+import documentApi from "./api/DocumentApi";
 
 Vue.use(Vuex);
 
@@ -55,6 +56,21 @@ const auth = {
       return new Promise(resolve => {
         dispatch("flushState", null, { root: true });
         resolve();
+      });
+    },
+    update({ commit }, payload) {
+      const uri = '/api/users/' + payload.user.username + '.json';
+      const params = {format: 'json'};
+      return documentApi.update(payload.user.username, payload.user.password, uri, payload.user, params).then(error => {
+        if(error) {
+          return error;
+        } else {
+          commit("updateAuth", {
+            user: payload.user.username,
+            pass: payload.user.password,
+            profile: payload.user.profile
+          });
+        }
       });
     }
   }

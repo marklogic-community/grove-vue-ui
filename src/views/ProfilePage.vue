@@ -50,7 +50,7 @@
       <div class="row">
         <div class="col-md-offset-7 col-md-5">
           <router-link to="/" class="btn btn-default">Cancel</router-link>
-          <button class="btn btn-primary" v-on:click.prevent="submit($v.form)">Submit</button>
+          <button class="btn btn-primary" v-on:click.prevent="submit($v)">Submit</button>
         </div>
       </div>
     </form>
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     checkUser(newValue) {
-        var user = Object.assign({}, newValue);
+        var user = JSON.parse(JSON.stringify(newValue));
         if(user && user.profile && user.profile.emails && !user.profile.emails.length) {
             user.profile.emails = [user.profile.emails];
         }
@@ -103,19 +103,26 @@ export default {
         self.user.profile.emails.splice(index, 1);
       }
     },
-    submit(form) {
+    submit($v) {
       var self = this;
       const toast = self.$parent.$refs.toast;
-      if(!form.$invalid && self.user.profile) {
-        self.addEmail();
+      if(!$v.form.$invalid && self.user.profile) {
+        self.addEmail($v);
 
         if (self.user.profile.emails) {
           _.pull(self.user.profile.emails, '');
         }
 
-        toast.showToast('Success', { theme: 'success' });
-      } else {
-        toast.showToast('Fail!', { theme: 'error' });
+        self.$store.dispatch({
+          type: "auth/update",
+          user: self.user
+        }).then(error => {
+          if (error) {
+            toast.showToast('Failed to update the user profile', { theme: 'error' });
+          } else {
+            toast.showToast('Successfully updated the user profile', { theme: 'success' });
+          }
+        });
       }
     }
   }
