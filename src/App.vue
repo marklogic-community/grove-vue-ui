@@ -26,6 +26,11 @@ import VueToast from "vue-toast";
 
 export default {
   name: "app",
+  mounted() {
+    this.$refs.toast.setOptions({
+      position: 'right top'
+    });
+  },
   components: {
     BreadCrumbs,
     Header,
