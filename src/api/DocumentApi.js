@@ -9,7 +9,7 @@ export default {
 
     return $http({
       method: "PUT",
-      url: "/v1/documents",
+      url: "/api/documents",
       auth: {
         username: "" + user,
         password: "" + pass,
@@ -36,7 +36,7 @@ export default {
 
     return $http({
       method: "DELETE",
-      url: "/v1/documents",
+      url: "/api/documents",
       auth: {
         username: "" + user,
         password: "" + pass,
