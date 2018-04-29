@@ -31,6 +31,9 @@ export default {
     Header,
     mlFooter,
     VueToast
+  },
+  created() {
+    this.$store.dispatch("auth/getStatus");
   }
 };
 </script>
