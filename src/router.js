@@ -16,7 +16,7 @@ Vue.use(Router);
 
 const checkLogin = (to, from, next) => {
   if (
-    $store.state.auth.isLoggedIn ||
+    $store.state.auth.authenticated ||
     !(to.meta.requiresLogin || to.meta.requiresUpdates)
   ) {
     next();
