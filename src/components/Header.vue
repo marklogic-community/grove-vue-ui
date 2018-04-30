@@ -11,8 +11,8 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav" role="tablist">
-        <li v-for="(route, $index) in $router.options.routes" :key="$index" v-if="route.meta.navArea === 'header' && showRoute(route)">
-          <router-link :to="{ name: route.name, params: { prev: $route.name } }">{{ route.meta.label }}</router-link>
+        <li v-for="(route, $index) in visibleRoutes" :key="$index" v-if="route.meta.navArea === 'header'">
+          <router-link :to="{ name: route.name, params: { prev: currentRoute.name } }">{{ route.meta.label }}</router-link>
         </li>
       </ul>
       <UserMenu/>
@@ -28,16 +28,21 @@ export default {
   components: {
     UserMenu
   },
-  methods: {
-    showRoute(route) {
-      if (this.$store.state.auth.isLoggedIn) {
-        return (
-          !route.meta.requiresUpdates ||
-          !(this.$store.state.auth.profile && this.$store.state.auth.profile.disallowUpdates)
-        );
-      } else {
-        return !(route.meta.requiresLogin || route.meta.requiresUpdates);
-      }
+  computed: {
+    currentRoute() {
+      return this.$route;
+    },
+    visibleRoutes() {
+      return this.$router.options.routes.filter(function(route) {
+        if (this.$store.state.auth.authenticated) {
+          return (
+            !route.meta.requiresUpdates ||
+            !(this.$store.state.auth.profile && this.$store.state.auth.profile.disallowUpdates)
+          );
+        } else {
+          return !(route.meta.requiresLogin || route.meta.requiresUpdates);
+        }
+      }, this);
     }
   }
 };
