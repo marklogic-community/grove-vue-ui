@@ -7,7 +7,7 @@
     <!-- display the logged in user -->
     <div class="welcome" v-if="isLoggedIn">
       <div class="navbar-collapse collapse">
-        <span class="glyphicon glyphicon-user"></span> {{ profile && profile.fullname || username }} | <span class="profile-link"><router-link :to="{ name: 'root.profile' }">Account</router-link></span>
+        <span class="glyphicon glyphicon-user"></span> {{ profile && profile.user.fullname || username }} | <span class="profile-link"><router-link :to="{ name: 'root.profile' }">Account</router-link></span>
 
         <button class="btn btn-danger btn-xs" type="button" v-on:click.prevent="logout()">Logout</button>
 
