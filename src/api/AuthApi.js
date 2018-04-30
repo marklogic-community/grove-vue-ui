@@ -79,7 +79,7 @@ export default {
         credentials: "same-origin"
       }).then(
         response => {
-          if (response.status === 204) {
+          if (response.status === 201 || response.status === 204) {
             return {};
           } else {
             return { isError: true, error: response.json() };

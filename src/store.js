@@ -107,15 +107,13 @@ const auth = {
         }
       });
     },
-    update({ commit }, payload) {
+    update({ dispatch }, payload) {
       return authApi.profile(payload.profile).then(result => {
           if (result.isError) {
             // error
             return result;
           } else {
-              commit("gotProfile", {
-                  profile: result
-              });
+              dispatch("getStatus");
           }
       });
     }
