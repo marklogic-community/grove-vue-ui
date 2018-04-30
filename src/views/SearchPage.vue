@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return this.$store.state.auth.isLoggedIn;
+      return this.$store.state.auth.authenticated;
     },
     response() {
       return this.$store.state.search[this.mode].response || {};
@@ -68,7 +68,7 @@ export default {
       return this.$store.state.search[this.mode].activeFacets || {};
     }
   },
-  activated: () => {
+  created() {
     if (this.isLoggedIn && !this.$store.state.search[this.mode].response) {
       this.search();
     }

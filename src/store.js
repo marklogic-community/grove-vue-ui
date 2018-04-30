@@ -1,48 +1,94 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import loginApi from "./api/LoginApi";
+import authApi from "./api/AuthApi";
 import searchApi from "./api/SearchApi";
 
 Vue.use(Vuex);
 
 const debug = true; //(process !== undefined) ? process.env.NODE_ENV !== "production" : true;
 
-function initAuthState(state) {
-  state.isLoggedIn = false;
-  state.username = undefined;
-  state.password = undefined;
-  state.profile = undefined;
-}
-
 const auth = {
   namespaced: true,
-  state: initAuthState({}),
+  state: {
+    authenticated: false,
+    username: undefined,
+    password: undefined,
+    profile: undefined
+  },
   mutations: {
-    flushState(state) {
-      initAuthState(state);
+    loggedIn(state, { username, password }) {
+      state.authenticated = true;
+      state.username = username;
+      state.password = password;
     },
-    updateAuth(state, payload) {
-      state.isLoggedIn = !!payload.user;
-      state.username = payload.user;
-      state.password = payload.pass;
-      state.profile = payload.profile || {};
+    loggedOut(state) {
+      state.authenticated = false;
+      state.username = undefined;
+      state.password = undefined;
+      state.profile = undefined;
+    },
+    gotStatus(state, { authenticated }) {
+      state.authenticated = authenticated;
+      if (!authenticated) {
+        state.username = undefined;
+        state.password = undefined;
+        state.profile = undefined;
+      }
+    },
+    gotProfile(state, { profile }) {
+      state.profile = profile || {};
+    },
+    updatedProfile(state, { profile }) {
+      state.profile = profile || {};
     }
   },
   actions: {
-    login({ commit }, payload) {
-      const user = payload.user;
-      const pass = payload.pass;
-      return loginApi.login(user, pass).then(result => {
-        if (result.profile) {
-          commit("updateAuth", {
-            user: user,
-            pass: pass,
-            profile: result.profile
-          });
-        } else {
+    getStatus({ commit }) {
+      return authApi.status().then(result => {
+        if (result.isError) {
           // error
           return result;
+        } else if (result.authenticated) {
+          commit("loggedIn", {
+            username: result.username,
+            password: undefined
+          });
+          authApi.profile().then(result => {
+            if (result.isError) {
+              // error
+              return result;
+            } else {
+              commit("gotProfile", {
+                profile: result
+              });
+            }
+          });
+        } else {
+          // not authenticated, do nothing
+        }
+      });
+    },
+    login({ commit }, { user, pass }) {
+      return authApi.login(user, pass).then(result => {
+        if (result.isError) {
+          // error
+          return result;
+        } else {
+          commit("loggedIn", {
+            username: user,
+            password: pass
+          });
+          authApi.profile().then(result => {
+            if (result.isError) {
+              // error
+              return result;
+            } else {
+              commit("gotProfile", {
+                profile: result
+              });
+            }
+          });
         }
       });
     },
@@ -52,9 +98,13 @@ const auth = {
       });
     },
     logout({ dispatch }) {
-      return new Promise(resolve => {
-        dispatch("flushState", null, { root: true });
-        resolve();
+      return authApi.logout().then(result => {
+        if (result.isError) {
+          // error
+          return result;
+        } else {
+          dispatch("loggedOut", null, { root: true });
+        }
       });
     }
   }
@@ -137,8 +187,8 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {
-    flushState({ commit }) {
-      commit("auth/flushState");
+    loggedOut({ commit }) {
+      commit("auth/loggedOut");
     }
   },
   modules: {
