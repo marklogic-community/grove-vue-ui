@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user.isLoggedIn" class="profile">
+  <div v-if="user.authenticated" class="profile">
     <div class="row">
       <div class="col-md-2"></div>
       <h2 class="col-md-10">Edit profile of {{ user.username }}</h2>
@@ -11,7 +11,7 @@
             <label class="control-label">Full name</label>
           </div>
           <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Full name of user" v-model.trim="user.profile.fullname">
+            <input type="text" class="form-control" placeholder="Full name of user" v-model.trim="user.profile.user.fullname">
           </div>
         </div>
       </div>
@@ -36,10 +36,10 @@
       <div class="form-group">
         <!-- always show add button -->
         <!-- repeat if there are emails -->
-        <div class="row" v-for="(email, index) in user.profile.emails">
+        <div class="row" v-for="(email, index) in user.profile.user.emails">
           <div class="col-md-offset-2 col-md-6">
             <div class="input-group additional-email">
-              <input type="text" class="form-control" placeholder="e-mail of user" v-model="user.profile.emails[index]"/>
+              <input type="text" class="form-control" placeholder="e-mail of user" v-model="user.profile.user.emails[index]"/>
               <span class="input-group-addon btn-danger" v-on:click.prevent="removeEmail(index)">
                 <span class="glyphicon glyphicon-remove"></span>
               </span>
@@ -78,8 +78,8 @@ export default {
   methods: {
     checkUser(newValue) {
         var user = JSON.parse(JSON.stringify(newValue));
-        if(user && user.profile && user.profile.emails && !user.profile.emails.length) {
-            user.profile.emails = [user.profile.emails];
+        if(user && user.profile && user.profile.user && user.profile.user.emails && !user.profile.user.emails.length) {
+            user.profile.user.emails = [auth.profile.user.emails];
         }
         return user;
     },
@@ -90,37 +90,35 @@ export default {
           return;
         }
         self.user.profile = self.user.profile || {};
-        if (!self.user.profile.emails) {
-          self.user.profile.emails = [];
+        if (!self.user.profile.user.emails) {
+          self.user.profile.user.emails = [];
         }
-        self.user.profile.emails.push(self.newEmail.trim());
+        self.user.profile.user.emails.push(self.newEmail.trim());
         self.newEmail = '';
       }
     },
     removeEmail(index) {
       var self = this;
-      if (self.user.profile && self.user.profile.emails) {
-        self.user.profile.emails.splice(index, 1);
+      if (self.user.profile.user && self.user.profile.user.emails) {
+        self.user.profile.user.emails.splice(index, 1);
       }
     },
     submit($v) {
       var self = this;
       const toast = self.$parent.$refs.toast;
-      if(!$v.form.$invalid && self.user.profile) {
+      if(!$v.form.$invalid && self.user) {
         self.addEmail($v);
 
-        if (self.user.profile.emails) {
-          _.pull(self.user.profile.emails, '');
+        if (self.user.profile.user.emails) {
+          _.pull(self.user.profile.user.emails, '');
         }
 
-        self.$store.dispatch({
-          type: "auth/update",
-          user: self.user
-        }).then(error => {
+        self.$store.dispatch("auth/update",self.user).then(error => {
           if (error) {
             toast.showToast('Failed to update the user profile', { theme: 'error' });
           } else {
             toast.showToast('Successfully updated the user profile', { theme: 'success' });
+            self.$router.push({ name: "root.landing" });
           }
         });
       }
