@@ -80,6 +80,10 @@ export default {
         var user = JSON.parse(JSON.stringify(newValue));
         if(user && user.profile && user.profile.user && user.profile.user.emails && !user.profile.user.emails.length) {
             user.profile.user.emails = [auth.profile.user.emails];
+        } else if(user && !user.profile){
+            user.profile = {
+                user: {}
+            };
         }
         return user;
     },

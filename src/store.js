@@ -109,7 +109,6 @@ const auth = {
     },
     update({ commit }, payload) {
       return authApi.profile(payload.profile).then(result => {
-          console.log(result);
           if (result.isError) {
             // error
             return result;
