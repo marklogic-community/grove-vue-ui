@@ -49,7 +49,7 @@
       </div>
       <div class="row">
         <div class="col-md-offset-7 col-md-5">
-          <router-link to="/" class="btn btn-default">Cancel</router-link>
+          <router-link :to="{name: previousRoute.name, params: previousRoute.params}" class="btn btn-default">Cancel</router-link>
           <button class="btn btn-primary" v-on:click.prevent="submit($v)">Submit</button>
         </div>
       </div>
@@ -74,6 +74,11 @@ export default {
       email
     },
     form: ['newEmail']
+  },
+  computed: {
+      previousRoute() {
+          return this.$store.state.route.from
+      }
   },
   methods: {
     checkUser(newValue) {
@@ -122,7 +127,7 @@ export default {
             toast.showToast('Failed to update the user profile', { theme: 'error' });
           } else {
             toast.showToast('Successfully updated the user profile', { theme: 'success' });
-            self.$router.push({ name: "root.landing" });
+            self.$router.push({ name: self.previousRoute.name, params: self.previousRoute.params });
           }
         });
       }
