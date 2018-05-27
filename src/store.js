@@ -108,7 +108,7 @@ const auth = {
       });
     },
     update({ dispatch }, payload) {
-      return authApi.profile(payload.profile).then(result => {
+      return authApi.profile(payload).then(result => {
           if (result.isError) {
             // error
             return result;
