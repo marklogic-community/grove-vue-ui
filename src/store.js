@@ -106,6 +106,16 @@ const auth = {
           dispatch("loggedOut", null, { root: true });
         }
       });
+    },
+    update({ dispatch }, payload) {
+      return authApi.profile(payload).then(result => {
+          if (result.isError) {
+            // error
+            return result;
+          } else {
+              dispatch("getStatus");
+          }
+      });
     }
   }
 };

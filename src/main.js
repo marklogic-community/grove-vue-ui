@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueHttp from "./vue-http";
 import BootstrapVue from "bootstrap-vue";
+import Vuelidate from 'vuelidate';
 
 import App from "./App.vue";
 import router from "./router";
@@ -10,6 +11,7 @@ import "./styles/main.less";
 
 Vue.use(VueHttp);
 Vue.use(BootstrapVue);
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
