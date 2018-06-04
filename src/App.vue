@@ -23,6 +23,7 @@ import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import Header from "@/components/Header.vue";
 import mlFooter from "@/components/ml-footer.vue";
 import VueToast from "vue-toast";
+import Editor from '@tinymce/tinymce-vue';
 
 export default {
   name: "app",
@@ -35,7 +36,8 @@ export default {
     BreadCrumbs,
     Header,
     mlFooter,
-    VueToast
+    VueToast,
+    Editor
   },
   created() {
     this.$store.dispatch("auth/getStatus");

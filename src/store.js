@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import authApi from "./api/AuthApi";
 import searchApi from "./api/SearchApi";
+import documentApi from "./api/DocumentApi";
 
 Vue.use(Vuex);
 
@@ -10,8 +11,8 @@ const debug = true; //(process !== undefined) ? process.env.NODE_ENV !== "produc
 
 const auth = {
   namespaced: true,
-  loaded : false,
   state: {
+    loaded : false,
     authenticated: false,
     username: undefined,
     password: undefined,
@@ -192,6 +193,47 @@ const search = {
   }
 };
 
+const document = {
+  namespaced: true,
+  actions: {
+    create({rootState}, payload) {
+      return documentApi
+        .create(
+          rootState.auth.username,
+          rootState.auth.password,
+          payload.data,
+          payload.params
+        )
+        .then(result => {
+          return result;
+        });
+    },
+    update({rootState}, payload) {
+      return documentApi
+        .update(
+          rootState.auth.username,
+          rootState.auth.password,
+          payload.data,
+          payload.params
+        )
+        .then(result => {
+            return result;
+        });
+      },
+    get({rootState}, payload) {
+      return documentApi
+        .get(
+          rootState.auth.username,
+          rootState.auth.password,
+          payload
+        )
+        .then(result => {
+          return result;
+        });
+    }
+  }
+};
+
 function getSearchParam(payload, state, param) {
   const mode = payload.mode || "all";
   return payload[param] || (state[mode] && state[mode][param]);
@@ -208,6 +250,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    search
+    search,
+    document
   }
 });
