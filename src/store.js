@@ -10,6 +10,7 @@ const debug = true; //(process !== undefined) ? process.env.NODE_ENV !== "produc
 
 const auth = {
   namespaced: true,
+  loaded : false,
   state: {
     authenticated: false,
     username: undefined,
@@ -29,6 +30,7 @@ const auth = {
       state.profile = undefined;
     },
     gotStatus(state, { authenticated }) {
+      state.loaded = true;
       state.authenticated = authenticated;
       if (!authenticated) {
         state.username = undefined;
@@ -49,23 +51,26 @@ const auth = {
         if (result.isError) {
           // error
           return result;
-        } else if (result.authenticated) {
-          commit("loggedIn", {
-            username: result.username,
-            password: undefined
-          });
-          authApi.profile().then(result => {
-            if (result.isError) {
-              // error
-              return result;
-            } else {
-              commit("gotProfile", {
-                profile: result
-              });
-            }
-          });
         } else {
-          // not authenticated, do nothing
+          commit("gotStatus", {
+            authenticated: result.authenticated
+          });
+          if (result.authenticated) {
+            commit("loggedIn", {
+              username: result.username,
+              password: undefined
+            });
+            authApi.profile().then(result => {
+              if (result.isError) {
+                // error
+                return result;
+              } else {
+                commit("gotProfile", {
+                  profile: result
+                });
+              }
+            });
+          }
         }
       });
     },
