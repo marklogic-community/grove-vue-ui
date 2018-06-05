@@ -38,9 +38,6 @@ export default {
     mlFooter,
     VueToast,
     Editor
-  },
-  created() {
-    this.$store.dispatch("auth/getStatus");
   }
 };
 </script>

@@ -217,7 +217,7 @@
   import * as X2JS from "x2js";
   import { required, minLength, maxLength, minValue, maxValue, numeric, email } from 'vuelidate/lib/validators';
   import Editor from '@tinymce/tinymce-vue';
-  import { uuid } from 'vue-uuid';
+  import * as uuid from 'uuid';
 
   const x2js = new X2JS();
 
@@ -368,7 +368,7 @@
           params.append('format', this.person.docFormat);
           params.append('collection', 'data');
           params.append('collection', 'data/people');
-          return this.$store.dispatch("document/update", {
+          return this.$store.dispatch("document/create", {
             data : data,
             params : params
           }).then(response => {
