@@ -217,6 +217,7 @@
   import * as X2JS from "x2js";
   import { required, minLength, maxLength, minValue, maxValue, numeric, email } from 'vuelidate/lib/validators';
   import Editor from '@tinymce/tinymce-vue';
+  import { uuid } from 'vue-uuid';
 
   const x2js = new X2JS();
 
@@ -361,20 +362,20 @@
           data = x2js.js2xml(wrap);
         }
         if (this.mode === 'create') {
-          return this.$store.dispatch("document/create", {
+          var uri = '/content/' + uuid.v1() + extension;
+          var params = new URLSearchParams();
+          params.append('uri', uri);
+          params.append('format', this.person.docFormat);
+          params.append('collection', 'data');
+          params.append('collection', 'data/people');
+          return this.$store.dispatch("document/update", {
             data : data,
-            params : {
-              format: this.person.docFormat,
-              directory: '/content/',
-              extension: extension,
-              collection: ['data', 'data/people']
-            }
+            params : params
           }).then(response => {
             if(response.isError) {
               toast.showToast(response.error, { theme: 'error' });
             } else {
               toast.showToast('Created', { theme: 'success' });
-              var uri = response.replace(/(.*\?uri=)/, '');
               this.$router.push({name: "root.view", params: { uri: uri }});
             }
           });

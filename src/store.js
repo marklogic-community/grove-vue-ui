@@ -196,18 +196,6 @@ const search = {
 const document = {
   namespaced: true,
   actions: {
-    create({rootState}, payload) {
-      return documentApi
-        .create(
-          rootState.auth.username,
-          rootState.auth.password,
-          payload.data,
-          payload.params
-        )
-        .then(result => {
-          return result;
-        });
-    },
     update({rootState}, payload) {
       return documentApi
         .update(

@@ -63,7 +63,7 @@ export default {
       return "application/" + this.uri.split('.').pop();
     },
     viewUri() {
-      return "/v1/documents?uri=" + encodeURIComponent(this.uri) + "&format=binary&transform=sanitize";
+      return "/api/documents?uri=" + encodeURIComponent(this.uri) + "&format=binary&transform=sanitize";
     },
     downloadUri() {
       return this.viewUri + "&transform=download";

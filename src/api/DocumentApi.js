@@ -2,31 +2,7 @@ import $http from "axios";
 
 export default {
   name: "DocumentApi",
-  create(user, pass, content, params) {
-    user = "" + user;
-    pass = "" + pass;
-    params = params || {};
-
-    return $http({
-      method: "POST",
-      url: "/api/documents",
-      auth: {
-        username: "" + user,
-        password: "" + pass,
-        sendImmediately: true
-      },
-      params: params,
-      data: content
-    }).then(
-      response => {
-        return { isError: false, response: response };
-      },
-      error => {
-        return { isError: true, error: error };
-      }
-    );
-  },
-  update(user, pass, uri, content, params) {
+  update(user, pass, data, params) {
     user = "" + user;
     pass = "" + pass;
     params = params || {};
@@ -39,11 +15,8 @@ export default {
         password: "" + pass,
         sendImmediately: true
       },
-      params: {
-        ...params,
-        uri: uri
-      },
-      data: content
+      params: params,
+      data: data
     }).then(
       response => {
         return { isError: false, response: response.data };
