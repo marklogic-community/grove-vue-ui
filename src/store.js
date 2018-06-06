@@ -12,7 +12,7 @@ const debug = true; //(process !== undefined) ? process.env.NODE_ENV !== "produc
 const auth = {
   namespaced: true,
   state: {
-    loaded : false,
+    initialized : false,
     authenticated: false,
     username: undefined,
     password: undefined,
@@ -31,7 +31,7 @@ const auth = {
       state.profile = undefined;
     },
     gotStatus(state, { authenticated }) {
-      state.loaded = true;
+      state.initialized = true;
       state.authenticated = authenticated;
       if (!authenticated) {
         state.username = undefined;
