@@ -1,4 +1,5 @@
 import $http from "axios";
+import * as qs from "query-string";
 
 export default {
   name: "DocumentApi",
@@ -15,8 +16,11 @@ export default {
         password: "" + pass,
         sendImmediately: true
       },
-      params: params,
-      data: data
+    params: params,
+    paramsSerializer: (params) => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    },
+    data: data
     }).then(
       response => {
         return { isError: false, response: response };
@@ -40,6 +44,9 @@ export default {
         sendImmediately: true
       },
       params: params,
+      paramsSerializer: (params) => {
+          return qs.stringify(params, { arrayFormat: 'repeat' })
+      },
       data: data
     }).then(
       response => {

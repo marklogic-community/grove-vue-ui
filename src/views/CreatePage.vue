@@ -363,14 +363,13 @@
         }
         if (this.mode === 'create') {
           var uri = '/content/' + uuid.v1() + extension;
-          var params = new URLSearchParams();
-          params.append('uri', uri);
-          params.append('format', this.person.docFormat);
-          params.append('collection', 'data');
-          params.append('collection', 'data/people');
           return this.$store.dispatch("document/create", {
             data : data,
-            params : params
+            params : {
+              uri : uri,
+              format : this.person.docFormat,
+              collection : ['data', 'data/people']
+            }
           }).then(response => {
             if(response.isError) {
               toast.showToast(response.error, { theme: 'error' });
