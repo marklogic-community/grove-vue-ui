@@ -8,12 +8,12 @@
       <!--h3>{{ fileName }}</h3>
       <simple-view-file :uri="viewUri" :content-type="contentType"
         :download-uri="downloadUri" :file-name="fileName">
-      </simple-view-file-->
+      </simple-view-file- ->
       <h3>{{ fileName }}</h3>
       <view-file :uri="viewUri" :content-type="contentType"
         :allow-modal="true" :controls="true" :download-uri="downloadUri"
         :file-name="fileName" :show-code="false" :trust-uri="false">
-      </view-file>
+      </view-file-->
     </div>
     <div class="col-sm-4 right-col">
       <div id="buttons-detail">
@@ -75,8 +75,16 @@ export default {
   methods: {
     deleteDoc() {
       if (window.confirm("This will permanently delete " + this.fileName + ", are you sure?")) {
-        // TODO
-        console.log("DetailPage: deleteDoc not implemented yet!");
+        const toast = self.$parent.$refs.toast;
+        const self = this;
+        self.$store.dispatch("document/delete",self.uri).then(error => {
+          if (error) {
+            toast.showToast('Failed to delete the document', { theme: 'error' });
+          } else {
+            toast.showToast('Successfully deleted the document', { theme: 'success' });
+            self.$router.push({ name: self.previousRoute.name, params: self.previousRoute.params });
+          }
+        });
       }
     }
   }

@@ -12,7 +12,7 @@ const debug = true; //(process !== undefined) ? process.env.NODE_ENV !== "produc
 const auth = {
   namespaced: true,
   state: {
-    initialized : false,
+    initialized: false,
     authenticated: false,
     username: undefined,
     password: undefined,
@@ -115,12 +115,12 @@ const auth = {
     },
     update({ dispatch }, payload) {
       return authApi.profile(payload).then(result => {
-          if (result.isError) {
-            // error
-            return result;
-          } else {
-              dispatch("getStatus");
-          }
+        if (result.isError) {
+          // error
+          return result;
+        } else {
+          dispatch("getStatus");
+        }
       });
     }
   }
@@ -196,7 +196,7 @@ const search = {
 const document = {
   namespaced: true,
   actions: {
-    create({rootState}, payload) {
+    create({ rootState }, payload) {
       return documentApi
         .create(
           rootState.auth.username,
@@ -205,10 +205,10 @@ const document = {
           payload.params
         )
         .then(result => {
-            return result;
+          return result;
         });
     },
-    update({rootState}, payload) {
+    update({ rootState }, payload) {
       return documentApi
         .update(
           rootState.auth.username,
@@ -217,16 +217,24 @@ const document = {
           payload.params
         )
         .then(result => {
-            return result;
+          return result;
         });
-      },
-    get({rootState}, payload) {
+    },
+    delete({ rootState }, payload) {
       return documentApi
-        .get(
+        .delete(
           rootState.auth.username,
           rootState.auth.password,
-          payload
+          payload.data,
+          payload.params
         )
+        .then(result => {
+          return result;
+        });
+    },
+    get({ rootState }, payload) {
+      return documentApi
+        .get(rootState.auth.username, rootState.auth.password, payload)
         .then(result => {
           return result;
         });
