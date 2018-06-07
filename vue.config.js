@@ -1,6 +1,6 @@
-const mlHost = "localhost";
-const mlPort = "9031";
-const mlHttps = false;
+const appHost = "localhost";
+const appPort = "9031";
+const appHttps = false;
 
 module.exports = {
   lintOnSave: false,
@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: (mlHttps ? "https" : "http") + "://" + mlHost + ":" + mlPort,
+        target: (appHttps ? "https" : "http") + "://" + appHost + ":" + appPort,
         secure: false,
         bypass: function(req) {
           if (req.url.startsWith("/api")) {
@@ -20,11 +20,34 @@ module.exports = {
                 " " +
                 req.url +
                 " to " +
-                (mlHttps ? "https" : "http") +
+                (appHttps ? "https" : "http") +
                 "://" +
-                mlHost +
+                appHost +
                 ":" +
-                mlPort
+                appPort
+            );
+          } else {
+            return req.url;
+          }
+        }
+      },
+      // for legacy proxying support
+      "/v1": {
+        target: (appHttps ? "https" : "http") + "://" + appHost + ":" + appPort,
+        secure: false,
+        bypass: function(req) {
+          if (req.url.startsWith("/v1")) {
+            console.log(
+              "Proxying " +
+                req.method +
+                " " +
+                req.url +
+                " to " +
+                (appHttps ? "https" : "http") +
+                "://" +
+                appHost +
+                ":" +
+                appPort
             );
           } else {
             return req.url;
