@@ -30,15 +30,15 @@
       <div class="form-group">
         <!-- always show add button -->
         <!-- repeat if there are emails -->
-        <div class="row" v-if="tmpProfile.emails" v-for="(email, index) in tmpProfile.emails">
+        <div class="row" v-if="tmpProfile.emails" v-for="(email, $index) in tmpProfile.emails" :key="$index">
           <div class="col-md-offset-2 col-md-6">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="e-mail of user" v-model.trim="tmpProfile.emails[index]" v-on:input="$v.tmpProfile.emails.$each[index].$touch"/>
-              <span class="input-group-addon btn-danger" v-on:click.prevent="removeEmail(index)">
+              <input type="text" class="form-control" placeholder="e-mail of user" v-model.trim="tmpProfile.emails[$index]" v-on:input="$v.tmpProfile.emails.$each[$index].$touch"/>
+              <span class="input-group-addon btn-danger" v-on:click.prevent="removeEmail($index)">
                 <span class="glyphicon glyphicon-remove"></span>
               </span>
             </div>
-            <div class="row" v-if="$v.tmpProfile.emails.$each[index].$error">
+            <div class="row" v-if="$v.tmpProfile.emails.$each[$index].$error">
               <div class="col-md-8 error text-danger">Not valid email!</div>
             </div>
           </div>

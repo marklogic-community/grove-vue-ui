@@ -169,7 +169,7 @@
           <label class="col-sm-2 control-label">Tags</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" v-model="newTag">
-            <div class="tag btn btn-info" v-for="(tag, index) in person.tags">
+            <div class="tag btn btn-info" v-for="(tag, $index) in person.tags" :key="$index">
               <span>{{tag}}</span>
               <span class="glyphicon glyphicon-remove-circle" v-on:click.prevent="removeTag(index)"></span>
             </div>
