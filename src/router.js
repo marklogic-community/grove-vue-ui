@@ -15,9 +15,8 @@ import $store from "./store";
 Vue.use(Router);
 
 const checkLogin = (to, from, next) => {
-  if(!$store.state.auth.loaded) {
-    $store.dispatch("auth/getStatus")
-    .then(function () {
+  if (!$store.state.auth.initialized) {
+    $store.dispatch("auth/getStatus").then(function() {
       redirectBasedOnAuth(to, from, next);
     });
   } else {
