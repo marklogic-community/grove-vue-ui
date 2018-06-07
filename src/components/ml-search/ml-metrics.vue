@@ -1,7 +1,7 @@
 <template>
   <div v-if="search.total > 0" class="ml-metrics search-metrics">
-    Showing {{ search.start }}-{{ pageEnd }} of {{ search.total }}<span v-if="!showDuration">.</span>
-    <span v-if="showDuration">
+    Showing {{ pageStart }}-{{ pageEnd }} of {{ search.total }}<span v-if="!showDuration">.</span>
+    <span v-if="showDuration && (seconds >= 0)">
       <span> in {{ seconds }} seconds.</span>
     </span>
   </div>
@@ -23,11 +23,17 @@ export default {
     }
   },
   computed: {
+    pageLength() {
+      return this.search["page-length"] || this.search.pageLength || 10;
+    },
+    pageStart() {
+      return (this.search.page !== undefined) ? ((this.search.page - 1) * this.pageLength + 1) : (this.search.start || 1);
+    },
     pageEnd() {
-      return this.search.start + this.search["page-length"] - 1;
+      return Math.min(this.pageStart + this.pageLength - 1, this.search.total);
     },
     seconds() {
-      return this.search.metrics['total-time'].substr(2,5);
+      return this.search.metrics && this.search.metrics['total-time'].substr(2,5) || -1;
     }
   }
 };
