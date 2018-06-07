@@ -16,11 +16,11 @@ export default {
         password: "" + pass,
         sendImmediately: true
       },
-    params: params,
-    paramsSerializer: (params) => {
-      return qs.stringify(params, { arrayFormat: 'repeat' })
-    },
-    data: data
+      params: params,
+      paramsSerializer: params => {
+        return qs.stringify(params, { arrayFormat: "repeat" });
+      },
+      data: data
     }).then(
       response => {
         return { isError: false, response: response };
@@ -44,8 +44,8 @@ export default {
         sendImmediately: true
       },
       params: params,
-      paramsSerializer: (params) => {
-          return qs.stringify(params, { arrayFormat: 'repeat' })
+      paramsSerializer: params => {
+        return qs.stringify(params, { arrayFormat: "repeat" });
       },
       data: data
     }).then(
