@@ -34,6 +34,11 @@ export default {
       }
     }).then(
       response => {
+        response.data.results.forEach(function(result) {
+          if (! result.id) {
+            result.id = encodeURIComponent(result.uri);
+          }
+        });
         return { response: response.data };
       },
       error => {

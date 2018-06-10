@@ -53,8 +53,11 @@ export default {
     profile() {
       return this.$store.state.auth.profile || {};
     },
+    id() {
+      return this.$route.params.id;
+    },
     uri() {
-      return this.$route.params.uri;
+      return decodeURIComponent(this.id);
     },
     fileName() {
       return this.uri.split('/').pop();
@@ -63,10 +66,10 @@ export default {
       return "application/" + this.uri.split('.').pop();
     },
     viewUri() {
-      return "/api/documents?uri=" + encodeURIComponent(this.uri) + "&format=binary&transform=sanitize";
+      return "/api/all/" + this.id;
     },
     downloadUri() {
-      return this.viewUri + "&transform=download";
+      return this.viewUri + "?download=true";
     },
     json() {
       return {};

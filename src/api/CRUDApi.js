@@ -1,16 +1,18 @@
 import $http from "axios";
 import * as qs from "query-string";
 
+var api = "/api/all";
+
 export default {
-  name: "DocumentApi",
+  name: "CRUDApi",
   create(user, pass, data, params) {
     user = "" + user;
     pass = "" + pass;
     params = params || {};
 
     return $http({
-      method: "PUT", //TODO: change to POST once the muir-node accepts a request without a uri
-      url: "/api/documents",
+      method: "PUT",
+      url: api,
       auth: {
         username: "" + user,
         password: "" + pass,
@@ -30,14 +32,33 @@ export default {
       }
     );
   },
+  read(user, pass, params) {
+    return $http({
+      method: "GET",
+      url: api,
+      auth: {
+        username: "" + user,
+        password: "" + pass,
+        sendImmediately: true
+      },
+      params: params
+    }).then(
+      response => {
+        return { response: response.data || "" };
+      },
+      error => {
+        return error;
+      }
+    );
+  },
   update(user, pass, data, params) {
     user = "" + user;
     pass = "" + pass;
     params = params || {};
 
     return $http({
-      method: "PUT",
-      url: "/api/documents",
+      method: "POST",
+      url: api,
       auth: {
         username: "" + user,
         password: "" + pass,
@@ -64,7 +85,7 @@ export default {
 
     return $http({
       method: "DELETE",
-      url: "/api/documents",
+      url: api,
       auth: {
         username: "" + user,
         password: "" + pass,
@@ -74,25 +95,6 @@ export default {
         ...params,
         uri: uri
       }
-    }).then(
-      response => {
-        return { response: response.data || "" };
-      },
-      error => {
-        return error;
-      }
-    );
-  },
-  get(user, pass, params) {
-    return $http({
-      method: "GET",
-      url: "/api/documents",
-      auth: {
-        username: "" + user,
-        password: "" + pass,
-        sendImmediately: true
-      },
-      params: params
     }).then(
       response => {
         return { response: response.data || "" };

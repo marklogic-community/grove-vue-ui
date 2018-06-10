@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import authApi from "./api/AuthApi";
 import searchApi from "./api/SearchApi";
-import documentApi from "./api/DocumentApi";
+import crudApi from "./api/CRUDApi";
 
 Vue.use(Vuex);
 
@@ -197,7 +197,7 @@ const document = {
   namespaced: true,
   actions: {
     create({ rootState }, payload) {
-      return documentApi
+      return crudApi
         .create(
           rootState.auth.username,
           rootState.auth.password,
@@ -208,8 +208,15 @@ const document = {
           return result;
         });
     },
+    read({ rootState }, payload) {
+      return crudApi
+        .read(rootState.auth.username, rootState.auth.password, payload)
+        .then(result => {
+          return result;
+        });
+    },
     update({ rootState }, payload) {
-      return documentApi
+      return crudApi
         .update(
           rootState.auth.username,
           rootState.auth.password,
@@ -221,7 +228,7 @@ const document = {
         });
     },
     delete({ rootState }, payload) {
-      return documentApi
+      return crudApi
         .delete(
           rootState.auth.username,
           rootState.auth.password,
@@ -231,20 +238,14 @@ const document = {
         .then(result => {
           return result;
         });
-    },
-    get({ rootState }, payload) {
-      return documentApi
-        .get(rootState.auth.username, rootState.auth.password, payload)
-        .then(result => {
-          return result;
-        });
     }
   }
 };
 
 function getSearchParam(payload, state, param) {
   const mode = payload.mode || "all";
-  return payload[param] || (state[mode] && state[mode][param]);
+  const searchState = state[mode];
+  return payload[param] || (searchState && searchState[param]) || {};
 }
 
 export default new Vuex.Store({

@@ -2,7 +2,7 @@
   <transition-group name="fade" mode="out-in">
     <div v-for="(result, $index) in results" :key="$index" class="result">
       <h4>
-        <router-link :to="{ name: 'root.view', params: { uri: result.uri } }">{{ resultLabel(result) }}</router-link>
+        <router-link :to="{ name: 'root.view', params: { id: result.id } }">{{ resultLabel(result) }}</router-link>
       </h4>
       <div class="matches">
         <div class="match" v-for="(match, $index) in result.matches" :key="$index">

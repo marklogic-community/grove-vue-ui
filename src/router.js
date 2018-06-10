@@ -114,7 +114,7 @@ const $router = new Router({
       }
     },
     {
-      path: "/detail:uri",
+      path: "/detail:id",
       name: "root.view",
       component: DetailPage,
       meta: {
