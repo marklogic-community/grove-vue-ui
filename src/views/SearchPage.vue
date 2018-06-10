@@ -83,9 +83,28 @@ export default {
   methods: {
     toggleFacet(facet, value) {
       console.log("Toggle " + facet + " " + value);
+      this.searchPending = true;
+      this.$store.dispatch({
+        type: "search/toggleFacet",
+        mode: this.mode,
+        facetName: facet,
+        value: value
+      }).then(() => {
+        this.searchPending = false;
+      });
     },
     toggleNegatedFacet(facet, value) {
       console.log("Negate " + facet + " " + value);
+      this.searchPending = true;
+      this.$store.dispatch({
+        type: "search/toggleFacet",
+        mode: this.mode,
+        facetName: facet,
+        value: value,
+        negate: true
+      }).then(() => {
+        this.searchPending = false;
+      });
     },
     pageChanged(p) {
       console.log("Changing to page " + p);
@@ -93,9 +112,9 @@ export default {
       this.search();
     },
     search(qtext) {
-      this.searchPending = true;
       this.qtext = qtext !== undefined ? qtext : this.qtext;
       console.log("Search " + this.qtext);
+      this.searchPending = true;
       this.$store.dispatch({
         type: "search/search",
         mode: this.mode,
