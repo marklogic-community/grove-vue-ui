@@ -1,13 +1,9 @@
 <template>
   <div class="chiclets">
     <div v-for="(facet, facetName, $index) in activeFacets" :key="$index">
-      <div class="btn btn-primary chiclet" v-for="(value, $index) in facet.values" :key="$index" v-if="!value.negated">
-        <span :title="value.value">{{ facetName }}: {{ value.value }}</span>
-        <span class="glyphicon glyphicon-remove-circle icon-white" v-on:click.prevent="!!toggle && toggle(facetName, value.value)"></span>
-      </div>
-      <div class="btn btn-warning chiclet negated" v-for="(value, $index) in facet.values" :key="$index" v-if="value.negated">
-        <span :title="value.value">{{ facetName }}: {{ value.value }}</span>
-        <span class="glyphicon glyphicon-remove-circle icon-white" v-on:click.prevent="!toggle && toggle(facetName, value.value)"></span>
+      <div class="btn chiclet" v-for="(value, $index) in facet.values" :key="$index" :class="{ 'btn-primary': !value.negated, 'btn-warning': value.negated, negated: value.negated }" v-on:click.prevent="!!toggle && toggle(facetName, facet.type, value.value)">
+        <span :title="value.value">{{ facetName }}: {{ value.value }} </span>
+        <span class="glyphicon glyphicon-remove-circle icon-white"></span>
       </div>
     </div>
   </div>
