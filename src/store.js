@@ -404,7 +404,7 @@ export default new Vuex.Store({
   mutations: {},
   actions: {
     init({ dispatch }) {
-      dispatch('auth/init');
+      return dispatch('auth/init');
     },
     loggedIn({ commit, dispatch }, payload) {
       commit('auth/loggedIn', payload);
