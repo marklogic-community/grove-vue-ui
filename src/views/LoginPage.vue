@@ -66,11 +66,10 @@ export default {
       self.hasLogoutSuccess = false;
       self.hasLogoutError = false;
 
-      self.$store.dispatch({
-        type: "auth/login",
+      self.$store.dispatch("auth/login", {
         user: self.user,
         pass: self.pass
-      }).then((error) => {
+      }).then(function(error) {
         self.pending = false;
         if (error) {
           self.hasLoginError = true;
@@ -102,9 +101,8 @@ export default {
       self.hasLogoutSuccess = false;
       self.hasLogoutError = false;
 
-      self.$store.dispatch({
-        type: "auth/logout"
-      }).then((error) => {
+      self.$store.dispatch("auth/logout")
+      .then(function(error) {
         self.pending = false;
         if (error) {
           self.hasLogoutError = true;
