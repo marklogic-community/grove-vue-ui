@@ -33,28 +33,30 @@ export default {
   },
   methods: {
     updateSimilar() {
-      this.loading = true;
-      this.$http({
-        method: "GET",
-        url: "/v1/resources/extsimilar",
-        params: {
-          "rs:uri": this.uri
-        },
-        auth: {
-          username: this.$store.state.auth.username,
-          password: this.$store.state.auth.password,
-          sendImmediately: true
-        }
-      }).then(
-        response => {
-          this.similar = response.data.similar;
-          this.loading = false;
-        },
-        error => {
-          console.log(error);
-          this.loading = false;
-        }
-      );
+      if (this.uri) {
+        this.loading = true;
+        this.$http({
+          method: "GET",
+          url: "/v1/resources/extsimilar",
+          params: {
+            "rs:uri": this.uri
+          },
+          auth: {
+            username: this.$store.state.auth.username,
+            password: this.$store.state.auth.password,
+            sendImmediately: true
+          }
+        }).then(
+          response => {
+            this.similar = response.data.similar;
+            this.loading = false;
+          },
+          error => {
+            console.log(error);
+            this.loading = false;
+          }
+        );
+      }
     }
   },
   watch: {
