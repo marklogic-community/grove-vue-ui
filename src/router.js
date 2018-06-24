@@ -1,28 +1,27 @@
-import Vue from "vue";
-import Router from "vue-router";
-import { sync } from "vuex-router-sync";
+import Vue from 'vue';
+import Router from 'vue-router';
+import { sync } from 'vuex-router-sync';
 
-import CreatePage from "./views/CreatePage.vue";
-import DetailPage from "./views/DetailPage.vue";
-import LandingPage from "./views/LandingPage.vue";
-import LoginPage from "./views/LoginPage.vue";
-import ProfilePage from "./views/ProfilePage.vue";
-import SearchPage from "./views/SearchPage.vue";
-import UploadPage from "./views/UploadPage.vue";
+import CreatePage from './views/CreatePage.vue';
+import DetailPage from './views/DetailPage.vue';
+import LandingPage from './views/LandingPage.vue';
+import LoginPage from './views/LoginPage.vue';
+import ProfilePage from './views/ProfilePage.vue';
+import SearchPage from './views/SearchPage.vue';
+import UploadPage from './views/UploadPage.vue';
 
-import $store from "./store";
+import $store from './store';
 
 Vue.use(Router);
 
 const checkLogin = (to, from, next) => {
-  if (!$store.state.auth.initialized) {
-    $store.dispatch("auth/getStatus").then(function() {
+  if (!$store.state.initialized) {
+    $store.dispatch('init').then(function() {
       redirectBasedOnAuth(to, from, next);
     });
   } else {
     redirectBasedOnAuth(to, from, next);
   }
-
 };
 
 const redirectBasedOnAuth = (to, from, next) => {
@@ -34,92 +33,113 @@ const redirectBasedOnAuth = (to, from, next) => {
   } else {
     next({
       replace: true,
-      name: "root.login",
+      name: 'root.login',
       params: { state: to.name, params: to.params }
     });
   }
 };
 
 const $router = new Router({
-  mode: "history",
+  mode: 'history',
   routes: [
     {
-      path: "/",
-      name: "root.landing",
+      path: '/',
+      name: 'root.landing',
       component: LandingPage,
       meta: {
-        label: "Home",
-        navArea: "header"
+        label: 'Home',
+        navArea: 'header'
       }
     },
     {
-      path: "/upload",
-      name: "root.upload",
+      path: '/upload/all',
+      name: 'root.upload',
       component: UploadPage,
+      props: {
+        type: 'all'
+      },
       meta: {
-        label: "Upload",
-        navArea: "header",
+        label: 'Upload',
+        navArea: 'header',
         requiresUpdates: true,
         checkLogin
       }
     },
     {
-      path: "/search",
-      name: "root.search",
+      path: '/search/all',
+      name: 'root.search',
       component: SearchPage,
+      props: {
+        type: 'all'
+      },
       meta: {
-        label: "Search",
-        navArea: "header",
+        label: 'Search',
+        navArea: 'header',
         requiresLogin: true,
         checkLogin
       }
     },
     {
-      path: "/create",
-      name: "root.create",
+      path: '/create/all',
+      name: 'root.create',
       component: CreatePage,
+      props: {
+        type: 'all'
+      },
       meta: {
-        label: "Create",
-        navArea: "header",
+        label: 'Create',
+        navArea: 'header',
         requiresUpdates: true
       }
     },
     {
-      path: "/login",
-      name: "root.login",
+      path: '/login',
+      name: 'root.login',
       component: LoginPage,
       meta: {
-        label: "Login",
-        navArea: "usermenu"
+        label: 'Login',
+        navArea: 'usermenu'
       }
     },
     {
-      path: "/profile",
-      name: "root.profile",
+      path: '/profile',
+      name: 'root.profile',
       component: ProfilePage,
       meta: {
-        label: "Profile",
-        navArea: "usermenu",
+        label: 'Profile',
+        navArea: 'usermenu',
         requiresLogin: true
       }
     },
     {
-      path: "/edit:uri",
-      name: "root.edit",
+      path: '/edit/all/:id',
+      name: 'root.edit',
       component: CreatePage,
+      props($route) {
+        return {
+          type: 'all',
+          id: $route.params.id
+        };
+      },
       meta: {
-        label: "Edit",
-        navArea: "document",
+        label: 'Edit',
+        navArea: 'document',
         requiresUpdates: true
       }
     },
     {
-      path: "/detail:id",
-      name: "root.view",
+      path: '/detail/all/:id',
+      name: 'root.view',
       component: DetailPage,
+      props($route) {
+        return {
+          type: 'all',
+          id: $route.params.id
+        };
+      },
       meta: {
-        label: "View",
-        navArea: "document",
+        label: 'View',
+        navArea: 'document',
         requiresLogin: true
       }
     }
