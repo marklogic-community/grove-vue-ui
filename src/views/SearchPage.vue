@@ -7,25 +7,25 @@
     </div>
     <div class="search row">
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
-        <ml-facets v-if="response.facets" :facets="response.facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
+        <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
       </div>
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
           v-on:click.prevent="$forceUpdate()"></i>
         <transition name="fade" mode="out-in">
-          <h4 v-if="!response.total">Do a search to get results</h4>
-          <h4 v-else-if="response.total === 0">No results to show</h4>
+          <h4 v-if="!total">Do a search to get results</h4>
+          <h4 v-else-if="total === 0">No results to show</h4>
           <div v-else class="results">
             <div class="pagination-ctrls">
-              <b-pagination size="sm" v-model="page" v-on:change="pageChanged" :limit="10" boundary-links="true" :total-rows="response.total" :per-page="response['page-length']">
+              <b-pagination size="sm" v-model="page" v-on:change="pageChanged" :limit="10" boundary-links="true" :total-rows="total" :per-page="pageLength">
               </b-pagination>
               <!--div class="col-sm-12 col-lg-5" id="search-operator-dropdowns">
                 <ml-select label="'Snippet Size'" current-selection="mlSearch.getSnippet() || 'compact'" selection-list="snippetList" on-select="setSnippet(selectionName)"></ml-select>
                 <ml-select label="'Sort'" current-selection="mlSearch.getSort() || 'score'" selection-list="sortList" on-select="setSort(selectionName)"></ml-select>
               </div-->
             </div>
-            <ml-metrics :search="response"></ml-metrics>
-            <ml-results :results="response.results"></ml-results>
+            <ml-metrics :metrics="metrics"></ml-metrics>
+            <ml-results :results="results"></ml-results>
           </div>
         </transition>
       </div>
@@ -42,11 +42,9 @@ import mlSelect from "@/components/ml-select.vue";
 
 export default {
   name: "SearchPage",
+  props: ['type'],
   data() {
     return {
-      mode: "all",
-      qtext: "",
-      page: 1,
       searchPending: false
     }
   },
@@ -61,16 +59,42 @@ export default {
     isLoggedIn() {
       return this.$store.state.auth.authenticated;
     },
-    response() {
-      return this.$store.state.search[this.mode].response || {};
+    searchState() {
+      return this.$store.state.search[this.type];
+    },
+    facets() {
+      return this.searchState.facets || {};
+    },
+    pageLength() {
+      return this.searchState.pageLength || 10;
+    },
+    total() {
+      return this.searchState.total || 0;
+    },
+    results() {
+      return this.searchState.results || [];
+    },
+    qtext() {
+      return this.searchState.qtext || '';
     },
     activeFacets() {
-      return this.$store.state.search[this.mode].activeFacets || {};
+      return this.searchState.activeFacets || {};
+    },
+    seconds() {
+      return this.searchState.seconds || 0;
+    },
+    metrics() {
+      return {
+        total: this.total,
+        page: this.page,
+        pageLength: this.pageLength,
+        seconds: this.seconds
+      };
     }
   },
   created() {
-    if (this.isLoggedIn && !this.$store.state.search[this.mode].response) {
-      this.search();
+    if (this.isLoggedIn) {
+      this.page = this.$store.getters['search/' + this.type + '/page'] || 1;
     }
   },
   watch: {
@@ -81,46 +105,41 @@ export default {
     }
   },
   methods: {
-    toggleFacet(facet, value) {
-      console.log("Toggle " + facet + " " + value);
+    toggleFacet(facet, type, value) {
+      console.log("Toggle " + facet + " " + type + " " + value);
       this.searchPending = true;
-      this.$store.dispatch({
-        type: "search/toggleFacet",
-        mode: this.mode,
-        facetName: facet,
-        value: value
+      this.$store.dispatch("search/" + this.type + "/toggleFacet", {
+        facet,
+        type,
+        value
       }).then(() => {
         this.searchPending = false;
       });
     },
-    toggleNegatedFacet(facet, value) {
-      console.log("Negate " + facet + " " + value);
+    toggleNegatedFacet(facet, type, value) {
+      console.log("Negate " + facet + " " + type + " " + value);
       this.searchPending = true;
-      this.$store.dispatch({
-        type: "search/toggleFacet",
-        mode: this.mode,
-        facetName: facet,
-        value: value,
-        negate: true
+      this.$store.dispatch("search/" + this.type + "/toggleFacet", {
+        facet,
+        type,
+        value,
+        negated: true
       }).then(() => {
         this.searchPending = false;
       });
     },
-    pageChanged(p) {
-      console.log("Changing to page " + p);
-      this.page = p;
-      this.search();
+    pageChanged(page) {
+      console.log("Paging to " + page);
+      this.searchPending = true;
+      this.$store.dispatch("search/" + this.type + "/paginate", { page }).then(() => {
+        this.searchPending = false;
+      });
     },
     search(qtext) {
-      this.qtext = qtext !== undefined ? qtext : this.qtext;
-      console.log("Search " + this.qtext);
+      console.log("Searching for " + qtext);
       this.searchPending = true;
-      this.$store.dispatch({
-        type: "search/search",
-        mode: this.mode,
-        qtext: this.qtext,
-        page: this.page,
-        length: this.response['page-length'] || 10
+      this.$store.dispatch("search/" + this.type + "/search", {
+        qtext
       }).then(() => {
         this.searchPending = false;
       });
