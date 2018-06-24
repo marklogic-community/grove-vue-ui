@@ -3,5 +3,8 @@
   "extends": [
     "plugin:vue/essential",
     "@vue/prettier"
-  ]
+  ],
+  "env": {
+    "commonjs": true
+  }
 }

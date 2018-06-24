@@ -1,29 +1,32 @@
-const appHost = "localhost";
-const appPort = "9031";
+/* eslint-env node */
+/* eslint-disable no-console */
+
+const appHost = 'localhost';
+const appPort = process.env.VUE_APP_MIDDLETIER_PORT || '9070';
 const appHttps = false;
 
 module.exports = {
   lintOnSave: false,
   configureWebpack: {
-    devtool: "eval-source-maps"
+    devtool: 'eval-source-maps'
   },
   devServer: {
     proxy: {
-      "/api": {
-        target: (appHttps ? "https" : "http") + "://" + appHost + ":" + appPort,
+      '/api': {
+        target: (appHttps ? 'https' : 'http') + '://' + appHost + ':' + appPort,
         secure: false,
         bypass: function(req) {
-          if (req.url.startsWith("/api")) {
+          if (req.url.startsWith('/api')) {
             console.log(
-              "Proxying " +
+              'Proxying ' +
                 req.method +
-                " " +
+                ' ' +
                 req.url +
-                " to " +
-                (appHttps ? "https" : "http") +
-                "://" +
+                ' to ' +
+                (appHttps ? 'https' : 'http') +
+                '://' +
                 appHost +
-                ":" +
+                ':' +
                 appPort
             );
           } else {
@@ -32,21 +35,21 @@ module.exports = {
         }
       },
       // for legacy proxying support
-      "/v1": {
-        target: (appHttps ? "https" : "http") + "://" + appHost + ":" + appPort,
+      '/v1': {
+        target: (appHttps ? 'https' : 'http') + '://' + appHost + ':' + appPort,
         secure: false,
         bypass: function(req) {
-          if (req.url.startsWith("/v1")) {
+          if (req.url.startsWith('/v1')) {
             console.log(
-              "Proxying " +
+              'Proxying ' +
                 req.method +
-                " " +
+                ' ' +
                 req.url +
-                " to " +
-                (appHttps ? "https" : "http") +
-                "://" +
+                ' to ' +
+                (appHttps ? 'https' : 'http') +
+                '://' +
                 appHost +
-                ":" +
+                ':' +
                 appPort
             );
           } else {

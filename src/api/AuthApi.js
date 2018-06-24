@@ -1,22 +1,23 @@
-import { polyfill } from "es6-promise";
-import "isomorphic-fetch";
+import { polyfill } from 'es6-promise';
+import 'isomorphic-fetch';
 
 polyfill();
 
 export default {
-  name: "AuthApi",
+  name: 'AuthApi',
 
   login(user, pass) {
-    return fetch("/api/auth/login", {
-      method: "POST",
+    return fetch('/api/auth/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
       },
       body: JSON.stringify({
-        username: "" + user,
-        password: "" + pass
+        username: '' + user,
+        password: '' + pass
       }),
-      credentials: "same-origin"
+      credentials: 'same-origin'
     }).then(
       response => {
         if (response.status === 200) {
@@ -32,9 +33,9 @@ export default {
   },
 
   logout() {
-    return fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "same-origin"
+    return fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'same-origin'
     }).then(
       response => {
         if (response.status === 204) {
@@ -50,9 +51,12 @@ export default {
   },
 
   status() {
-    return fetch("/api/auth/status", {
-      method: "GET",
-      credentials: "same-origin"
+    return fetch('/api/auth/status', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      },
+      credentials: 'same-origin'
     }).then(
       response => {
         if (response.status === 200) {
@@ -70,13 +74,13 @@ export default {
   profile(profile) {
     if (profile) {
       // update
-      return fetch("/api/auth/profile", {
-        method: "POST",
+      return fetch('/api/auth/profile', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(profile),
-        credentials: "same-origin"
+        credentials: 'same-origin'
       }).then(
         response => {
           if (response.status === 201 || response.status === 204) {
@@ -91,9 +95,12 @@ export default {
       );
     } else {
       // get
-      return fetch("/api/auth/profile", {
-        method: "GET",
-        credentials: "same-origin"
+      return fetch('/api/auth/profile', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json'
+        },
+        credentials: 'same-origin'
       }).then(
         response => {
           if (response.status === 200) {

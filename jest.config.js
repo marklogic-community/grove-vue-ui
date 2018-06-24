@@ -1,10 +1,7 @@
+/* eslint-env node */
+
 module.exports = {
-  moduleFileExtensions: [
-    'js',
-    'jsx',
-    'json',
-    'vue'
-  ],
+  moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
   transform: {
     '^.+\\.vue$': 'vue-jest',
     '^.+\\.jsx?$': 'babel-jest'
@@ -12,8 +9,6 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
-  snapshotSerializers: [
-    'jest-serializer-vue'
-  ],
+  snapshotSerializers: ['jest-serializer-vue'],
   mapCoverage: true
-}
+};
