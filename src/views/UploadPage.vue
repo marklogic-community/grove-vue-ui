@@ -19,22 +19,24 @@
 export default {
   name: "UploadPage",
   components: {},
+  props: ['type'],
   computed: {},
   methods: {
     sendFile(e) {
       var progress = e.detail;
       console.log(["sendFile", progress]);
       progress.update(0);
-      setTimeout(function() {
-        progress.update(Math.random() * 100);
-        setTimeout(function() {
-          if (Math.random() > 0.5) {
-            progress.update(100);
-          } else {
-            progress.error("upload failed");
-          }
-        }, Math.random() * 5000);
-      }, Math.random() * 5000);
+      this.$store.dispatch('crud/' + this.type + '/create', {
+        id: encodeURIComponent('/upload/' + progress.file.name),
+        data: progress.file,
+        format: 'binary'
+      }).then(function(response) {
+        if (!response.isError) {
+          progress.update(100);
+        } else {
+          progress.error(response.error);
+        }
+      })
     },
     sendAllFiles(e) {
       var all = e.detail;
