@@ -25,9 +25,9 @@
               <dt v-show="metadata.metadataValues" class="col-sm-2">Metadata</dt>
               <dd v-show="metadata.metadataValues" class="col-sm-10">
                 <dl class="row">
-                  <template v-for="(v, key) in metadata.metadataValues">
-                    <dt class="col-sm-2">{{ key }}</dt>
-                    <dd class="col-sm-10">{{ v }}</dd>
+                  <template v-for="(v, key, $index) in metadata.metadataValues">
+                    <dt class="col-sm-2" :key="$index">{{ key }}</dt>
+                    <dd class="col-sm-10" :key="$index">{{ v }}</dd>
                   </template>
                 </dl>
               </dd>
