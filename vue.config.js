@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const appHost = 'localhost';
-const appPort = process.env.VUE_APP_MIDDLETIER_PORT || '9070';
+const appPort = process.env.VUE_APP_MIDDLETIER_PORT || '9003';
 const appHttps = false;
 
 module.exports = {
