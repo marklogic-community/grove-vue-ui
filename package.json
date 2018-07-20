@@ -1,11 +1,11 @@
 {
   "name": "vue-cli",
-  "version": "0.1.0",
+  "version": "0.10.0-alpha",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
-    "test": "vue-cli-service test",
+    "test": "vue-cli-service test:unit",
     "e2e": "vue-cli-service e2e",
     "lint": "vue-cli-service lint"
   },
