@@ -51,7 +51,11 @@ export default {
       response => {
         var id = response.headers.get('location');
         return response.text().then(text => {
-          return { isError: false, response: text, id: id };
+          if (response.status === 201) {
+            return { isError: false, response: text, id: id };
+          } else {
+            return { isError: true, error: text, id: id };
+          }
         });
       },
       error => {
