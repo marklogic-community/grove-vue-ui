@@ -13,7 +13,7 @@
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
           v-on:click.prevent="$forceUpdate()"></i>
         <transition name="fade" mode="out-in">
-          <h4 v-if="!total">Do a search to get results</h4>
+          <h4 v-if="!results">Do a search to get results</h4>
           <h4 v-else-if="total === 0">No results to show</h4>
           <div v-else class="results">
             <div class="pagination-ctrls">
@@ -72,7 +72,7 @@ export default {
       return this.searchState.total || 0;
     },
     results() {
-      return this.searchState.results || [];
+      return this.searchState.results;
     },
     qtext() {
       return this.searchState.qtext || '';
