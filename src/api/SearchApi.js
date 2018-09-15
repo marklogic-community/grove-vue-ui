@@ -12,7 +12,7 @@ export default {
 
     var facets = Object.keys(activeFacets || {}).map(function(facetName) {
       var constraintType = activeFacets[facetName].type;
-      if (constraintType && constraintType.substring(0,3) === 'xs:') {
+      if (constraintType && constraintType.substring(0, 3) === 'xs:') {
         constraintType = 'range';
       }
       return {
@@ -70,7 +70,7 @@ export default {
 
     var facets = Object.keys(activeFacets || {}).map(function(facetName) {
       var constraintType = activeFacets[facetName].type;
-      if (constraintType && constraintType.substring(0,3) === 'xs:') {
+      if (constraintType && constraintType.substring(0, 3) === 'xs:') {
         constraintType = 'range';
       }
       return {
@@ -113,6 +113,56 @@ export default {
       response => {
         return response.json().then(function(json) {
           return { response: json };
+        });
+      },
+      error => {
+        return error;
+      }
+    );
+  },
+  suggest(searchType, ptext, activeFacets) {
+    searchType = searchType !== undefined ? searchType : 'all';
+    ptext = ptext !== undefined ? ptext : '';
+
+    var facets = Object.keys(activeFacets || {}).map(function(facetName) {
+      var constraintType = activeFacets[facetName].type;
+      if (constraintType && constraintType.substring(0, 3) === 'xs:') {
+        constraintType = 'range';
+      }
+      return {
+        type: 'selection',
+        constraint: facetName,
+        constraintType: constraintType,
+        mode: 'and',
+        value: activeFacets[facetName].values.map(function(facetValue) {
+          if (facetValue.negated) {
+            return { not: facetValue.value };
+          } else {
+            return facetValue.value;
+          }
+        })
+      };
+    });
+
+    // TODO: expose /api/search/{type}/suggest in middle-tier, and call that
+    //       as /v1/suggest doesn't understand search filters
+    return fetch(
+      '/v1/suggest?options=' +
+        searchType +
+        '&partial-q=' +
+        encodeURIComponent(ptext),
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        credentials: 'same-origin'
+      }
+    ).then(
+      response => {
+        return response.json().then(function(json) {
+          return json;
         });
       },
       error => {

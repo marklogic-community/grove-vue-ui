@@ -1,11 +1,9 @@
 <template>
   <section>
-    <div class="row">
+    <div class="search row">
       <div class="col-xs-12 search-row">
         <ml-input :qtext="qtext" :search="search" :suggest="suggest" class="search"></ml-input>
       </div>
-    </div>
-    <div class="search row">
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
         <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
       </div>
@@ -39,6 +37,7 @@ import mlInput from "@/components/ml-search/ml-input.vue";
 import mlMetrics from "@/components/ml-search/ml-metrics.vue";
 import mlResults from "@/components/ml-search/ml-results.vue";
 import mlSelect from "@/components/ml-select.vue";
+import SearchApi from "@/api/SearchApi.js";
 
 export default {
   name: "SearchPage",
@@ -146,10 +145,19 @@ export default {
     },
     suggest(val) {
       console.log("Suggest " + val);
-      return new Promise(resolve => {
-        resolve([val + " abc", "def " + val]);
+      return SearchApi.suggest(this.type, val).then(response => {
+        return response.suggestions;
       });
     }
   }
 };
 </script>
+
+<style lang="less" scoped>
+.search-row {
+  margin-top: 20px;
+  form {
+    padding-bottom: 0;
+  }
+}
+</style>
