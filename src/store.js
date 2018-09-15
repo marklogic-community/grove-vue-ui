@@ -137,7 +137,7 @@ function typedSearchState(searchType) {
       pageLength: 10,
       total: 0,
       facets: {},
-      results: null,
+      results: undefined,
       qtext: '',
       activeFacets: {}
     },
