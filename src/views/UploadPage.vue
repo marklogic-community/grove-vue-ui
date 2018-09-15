@@ -32,6 +32,7 @@ export default {
         data: progress.file,
         format: 'binary'
       }).then(function(response) {
+        progress.id = response.id;
         if (!response.isError) {
           progress.update(100);
         } else {
@@ -46,6 +47,10 @@ export default {
     openFile(e) {
       var progress = e.detail;
       console.log(["openFile", progress]);
+      this.$router.push({
+        name: 'root.view',
+        params: { id: progress.id }
+      });
     }
   }
 }
