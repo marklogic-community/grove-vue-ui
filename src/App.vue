@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <vue-toast ref="toast"></vue-toast>
 
     <Header/>
