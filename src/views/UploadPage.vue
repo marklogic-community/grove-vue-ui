@@ -27,7 +27,8 @@ export default {
       console.log(["sendFile", progress]);
       progress.update(0);
       this.$store.dispatch('crud/' + this.type + '/create', {
-        id: encodeURIComponent('/upload/' + progress.file.name),
+        // Note: spaces in names/id's are not accepted, not even encoded.
+        id: encodeURIComponent('/upload/' + progress.file.name.replace(/\s/g, '_')),
         data: progress.file,
         format: 'binary'
       }).then(function(response) {
