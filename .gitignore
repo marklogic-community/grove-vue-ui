@@ -2,7 +2,7 @@
 node_modules
 /dist
 
-/test/e2e/reports/
+/tests/e2e/reports/
 selenium-debug.log
 
 # local env files
@@ -21,3 +21,4 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+*.sw*

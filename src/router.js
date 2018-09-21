@@ -2,14 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import { sync } from 'vuex-router-sync';
 
-import CreatePage from './views/CreatePage.vue';
-import DetailPage from './views/DetailPage.vue';
-import LandingPage from './views/LandingPage.vue';
-import LoginPage from './views/LoginPage.vue';
-import ProfilePage from './views/ProfilePage.vue';
-import SearchPage from './views/SearchPage.vue';
-import UploadPage from './views/UploadPage.vue';
-
 import $store from './store';
 
 Vue.use(Router);
@@ -41,11 +33,14 @@ const redirectBasedOnAuth = (to, from, next) => {
 
 const $router = new Router({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'root.landing',
-      component: LandingPage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "landing" */ './views/LandingPage.vue'),
       meta: {
         label: 'Home',
         navArea: 'header'
@@ -54,7 +49,9 @@ const $router = new Router({
     {
       path: '/upload/all',
       name: 'root.upload',
-      component: UploadPage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "upload" */ './views/UploadPage.vue'),
       props: {
         type: 'all'
       },
@@ -68,7 +65,9 @@ const $router = new Router({
     {
       path: '/search/all',
       name: 'root.search',
-      component: SearchPage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "search" */ './views/SearchPage.vue'),
       props: {
         type: 'all'
       },
@@ -82,7 +81,9 @@ const $router = new Router({
     {
       path: '/create/all',
       name: 'root.create',
-      component: CreatePage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "create" */ './views/CreatePage.vue'),
       props: {
         type: 'all'
       },
@@ -95,7 +96,9 @@ const $router = new Router({
     {
       path: '/login',
       name: 'root.login',
-      component: LoginPage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "login" */ './views/LoginPage.vue'),
       meta: {
         label: 'Login',
         navArea: 'usermenu'
@@ -104,7 +107,9 @@ const $router = new Router({
     {
       path: '/profile',
       name: 'root.profile',
-      component: ProfilePage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "profile" */ './views/ProfilePage.vue'),
       meta: {
         label: 'Profile',
         navArea: 'usermenu',
@@ -114,7 +119,9 @@ const $router = new Router({
     {
       path: '/edit/all/:id',
       name: 'root.edit',
-      component: CreatePage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "create" */ './views/CreatePage.vue'),
       props($route) {
         return {
           type: 'all',
@@ -130,7 +137,9 @@ const $router = new Router({
     {
       path: '/detail/all/:id',
       name: 'root.view',
-      component: DetailPage,
+      // lazy-loading of page
+      component: () =>
+        import(/* webpackChunkName: "detail" */ './views/DetailPage.vue'),
       props($route) {
         return {
           type: 'all',

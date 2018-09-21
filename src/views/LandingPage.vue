@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="content-header">
-      <h1>Successful Deployment! <small>Slush Generator</small></h1>
+      <h1>Successful Deployment! <small>Grove Vue.js Template</small></h1>
     </section>
 
     <section class="content landing">
@@ -11,7 +11,7 @@
         <div class="col-md-6">
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title">Slush-MarkLogic-Node Generator</h3>
+              <h3 class="panel-title">Grove Vue.js Template</h3>
             </div>
             <div class="panel-body">
               <ul>

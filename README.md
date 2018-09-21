@@ -2,7 +2,7 @@
 
 This project provides a skeleton for a Vue.js front-end stack, designed to run against a muir-node middle-tier, backed by MarkLogic.
 
-This project is still heavily Work In Progress.
+This project is still Work In Progress.
 
 ## Quick Start
 
@@ -23,3 +23,33 @@ After that you can pull in dependencies, and launch the front-end:
 - npm run serve
 
 A browser should open automatically (typically at localhost:8080).
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Run your end-to-end tests
+```
+npm run test:e2e
+```
