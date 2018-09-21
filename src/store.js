@@ -401,10 +401,16 @@ export default new Vuex.Store({
   state: {
     initialized: false
   },
-  mutations: {},
+  mutations: {
+    isInitialized(state, { initialized }) {
+      state.initialized = initialized;
+    }
+  },
   actions: {
-    init({ dispatch }) {
-      return dispatch('auth/init');
+    init({ commit, dispatch }) {
+      return dispatch('auth/init').then(function() {
+        commit('isInitialized', { initialized: true });
+      });
     },
     loggedIn({ commit, dispatch }, payload) {
       commit('auth/loggedIn', payload);
