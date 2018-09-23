@@ -24,9 +24,49 @@ After that you can pull in dependencies, and launch the front-end:
 
 A browser should open automatically (typically at localhost:8080).
 
-## Project setup
+## Using HTTPS
+
+There are two places to think about HTTPS:
+
+- When serving the files of this UI application to a client (a browser), and
+- When this UI application makes network calls to a middle-tier or other backend.
+
+As the sections below make clear, in most production-like situations, nothing needs to change in this application when moving from HTTP to HTTPS or vice-versa.
+
+### Using HTTPS when serving the UI application
+
+You will most often want to use HTTPS in a production-like environment. Typically, in such an environment, this UI will have been transpiled and minified into a set of static files (possible to achieve by running `npm run build`). A file server (which could be a Grove middle-tier, but could also be Apache, Nginx, etc, which serves static assets and proxies back to a middle-tier) will then serve those files to clients. The file server should be configured to use HTTPS - and nothing special has to be done in this UI application.
+
+Sometimes, however, you will want to use HTTPS in development, when you are making use of the Webpack development server bundled with this Vue.js CLI based app. This is easy to setup: Simply set the `VUE_APP_ENABLE_HTTPS_IN_FRONTEND` environment variable to true.
+
+You can do this in .env.development (shared with your team) or .env.development.local (only for your local machine):
+
+```
+VUE_APP_ENABLE_HTTPS_IN_FRONTEND=true
+```
+
+### Using HTTPS when making network calls
+
+As in the last section, in a production situation, nothing special needs to be done. All network calls should be relative URLs, inheriting the protocol (https), host and port from which the UI application files themselves were served.
+
+In development, when your middle-tier or other backend requires HTTPS, simply set the `VUE_APP_HTTPS_ENABLED_IN_MIDDLETIER` environment variable to true.
+
+You can do this in .env.development (shared with your team) or .env.development.local (only for your local machine):
+
+```
+VUE_APP_HTTPS_ENABLED_IN_MIDDLETIER=true
+```
+
+## NPM command overview
+
+### Install all dependencies
 ```
 npm install
+```
+
+### Install prod dependencies only
+```
+npm install --only=prod
 ```
 
 ### Compiles and hot-reloads for development
