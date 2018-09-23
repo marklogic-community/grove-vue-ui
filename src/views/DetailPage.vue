@@ -70,10 +70,11 @@
     </div>
     <div class="col-sm-4 right-col">
       <div id="buttons-detail">
-        <button class="btn btn-default" ui-sref="root.search">Search</button>
-        <button class="btn btn-primary"
+        <router-link tag="button" class="btn btn-default"
+                 :to="{ name: 'root.search' }">Search</router-link>
+        <router-link tag="button" class="btn btn-primary"
                 v-show="!profile.disallowUpdates"
-                ui-sref="root.edit({id: id})">Edit</button>
+                :to="{ name: 'root.edit', params: { id: id } }">Edit</router-link>
         <button class="btn btn-primary"
                 v-show="!profile.disallowUpdates"
                 v-on:click.prevent="deleteDoc()">Delete</button>

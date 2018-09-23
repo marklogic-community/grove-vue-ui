@@ -15,7 +15,7 @@
         <div class="col-sm-2">
         </div>
         <h2 class="col-sm-10" v-if="mode === 'create'">Create a Document</h2>
-        <h2 class="col-sm-10" v-if="mode === 'edit'">Edit "{{ uri }}"</h2>
+        <h2 class="col-sm-10" v-if="mode === 'edit'">Edit "{{ id }}"</h2>
       </div>
       <form class="form-horizontal">
         <div class="form-group">
@@ -138,7 +138,7 @@
             <input type="text" class="form-control" v-model="person.address" placeholder="">
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" v-if="person.location">
           <label class="col-sm-2 control-label">Location</label>
           <div class="col-sm-5">
             <input type="number" class="form-control" v-model="person.location.latitude" placeholder=""
@@ -226,6 +226,7 @@ import {
 } from 'vuelidate/lib/validators';
 import Editor from '@tinymce/tinymce-vue';
 import * as uuid from 'uuid';
+import crudApi from '@/api/CRUDApi.js';
 
 const x2js = new X2JS();
 
@@ -236,6 +237,11 @@ export default {
   },
   props: ['type', 'id'],
   data() {
+    if (this.id) {
+      crudApi.read(this.type, this.id).then(response => {
+        this.person = JSON.parse(response.response);
+      });
+    }
     return {
       person: this.initPerson(),
       editorOptions: {
