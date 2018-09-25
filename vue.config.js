@@ -20,6 +20,9 @@ const appMiddletierUsesHttps = bool(
   false
 );
 
+const middletierUrl =
+  (appMiddletierUsesHttps ? 'https' : 'http') + '://' + appHost + ':' + appPort;
+
 module.exports = {
   lintOnSave: false,
   configureWebpack: {
@@ -29,26 +32,12 @@ module.exports = {
     https: appFrontendUsesHttps,
     proxy: {
       '/api': {
-        target:
-          (appMiddletierUsesHttps ? 'https' : 'http') +
-          '://' +
-          appHost +
-          ':' +
-          appPort,
+        target: middletierUrl,
         secure: false,
         bypass: function(req) {
           if (req.url.startsWith('/api')) {
             console.log(
-              'Proxying ' +
-                req.method +
-                ' ' +
-                req.url +
-                ' to ' +
-                (appMiddletierUsesHttps ? 'https' : 'http') +
-                '://' +
-                appHost +
-                ':' +
-                appPort
+              'Proxying ' + req.method + ' ' + req.url + ' to ' + middletierUrl
             );
           } else {
             return req.url;
@@ -57,26 +46,12 @@ module.exports = {
       },
       // for legacy proxying support
       '/v1': {
-        target:
-          (appMiddletierUsesHttps ? 'https' : 'http') +
-          '://' +
-          appHost +
-          ':' +
-          appPort,
+        target: middletierUrl,
         secure: false,
         bypass: function(req) {
           if (req.url.startsWith('/v1')) {
             console.log(
-              'Proxying ' +
-                req.method +
-                ' ' +
-                req.url +
-                ' to ' +
-                (appMiddletierUsesHttps ? 'https' : 'http') +
-                '://' +
-                appHost +
-                ':' +
-                appPort
+              'Proxying ' + req.method + ' ' + req.url + ' to ' + middletierUrl
             );
           } else {
             return req.url;
