@@ -105,7 +105,7 @@ export default {
         response => {
           if (response.status === 200) {
             return response.json();
-          } else if (response.status === 404) {
+          } else if (response.status === 204 || response.status === 404) {
             return {};
           } else {
             return { isError: true, error: response.json() };
