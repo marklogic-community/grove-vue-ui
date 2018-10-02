@@ -1,7 +1,11 @@
 {
-  "name": "vue-cli",
-  "version": "0.10.0-alpha",
+  "name": "grove-vue-ui",
+  "version": "0.10.0-beta",
   "private": true,
+  "grove": {
+    "templateID": "grove-vue-ui",
+    "templateVersion": "0.10.0-beta"
+  },
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
