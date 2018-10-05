@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import UserMenu from "@/components/UserMenu.vue";
+import UserMenu from '@/components/UserMenu.vue';
 
 export default {
-  name: "Header",
+  name: 'Header',
   components: {
     UserMenu
   },
@@ -37,7 +37,10 @@ export default {
         if (this.$store.state.auth.authenticated) {
           return (
             !route.meta.requiresUpdates ||
-            !(this.$store.state.auth.profile && this.$store.state.auth.profile.disallowUpdates)
+            !(
+              this.$store.state.auth.profile &&
+              this.$store.state.auth.profile.disallowUpdates
+            )
           );
         } else {
           return !(route.meta.requiresLogin || route.meta.requiresUpdates);

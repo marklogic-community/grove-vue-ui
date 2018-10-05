@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ml-results",
+  name: 'ml-results',
   props: {
     results: {
       type: Array,

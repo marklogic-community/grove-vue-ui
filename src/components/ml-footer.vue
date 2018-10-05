@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: "ml-footer",
+  name: 'ml-footer',
   data() {
     return {
       currentYear: new Date().getUTCFullYear()

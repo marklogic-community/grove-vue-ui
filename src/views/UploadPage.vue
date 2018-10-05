@@ -17,45 +17,48 @@
 
 <script>
 export default {
-  name: "UploadPage",
+  name: 'UploadPage',
   components: {},
   props: ['type'],
   computed: {},
   methods: {
     sendFile(e) {
       var progress = e.detail;
-      console.log(["sendFile", progress]);
+      console.log(['sendFile', progress]);
       progress.update(0);
-      this.$store.dispatch('crud/' + this.type + '/create', {
-        // Note: spaces in names/id's are not accepted, not even encoded.
-        id: encodeURIComponent('/upload/' + progress.file.name.replace(/\s/g, '_')),
-        data: progress.file,
-        format: 'binary'
-      }).then(function(response) {
-        progress.id = response.id;
-        if (!response.isError) {
-          progress.update(100);
-        } else {
-          progress.error(response.error);
-        }
-      })
+      this.$store
+        .dispatch('crud/' + this.type + '/create', {
+          // Note: spaces in names/id's are not accepted, not even encoded.
+          id: encodeURIComponent(
+            '/upload/' + progress.file.name.replace(/\s/g, '_')
+          ),
+          data: progress.file,
+          format: 'binary'
+        })
+        .then(function(response) {
+          progress.id = response.id;
+          if (!response.isError) {
+            progress.update(100);
+          } else {
+            progress.error(response.error);
+          }
+        });
     },
     sendAllFiles(e) {
       var all = e.detail;
-      console.log(["sendAllFiles", all]);
+      console.log(['sendAllFiles', all]);
     },
     openFile(e) {
       var progress = e.detail;
-      console.log(["openFile", progress]);
+      console.log(['openFile', progress]);
       this.$router.push({
         name: 'root.view',
         params: { id: progress.id }
       });
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-
 </style>

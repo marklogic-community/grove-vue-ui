@@ -128,7 +128,10 @@ export default {
   created() {
     var self = this;
     this.$store
-      .dispatch('crud/' + this.type + '/view', { id: this.id, view: 'metadata' })
+      .dispatch('crud/' + this.type + '/view', {
+        id: this.id,
+        view: 'metadata'
+      })
       .then(function(response) {
         if (!response.isError) {
           var metadata = JSON.parse(response.response);
@@ -157,16 +160,15 @@ export default {
               .then(function(response) {
                 if (!response.isError) {
                   self.json = JSON.parse(response.response);
-                  self.raw = JSON.stringify(
-                    self.json,
-                    null,
-                    2
-                  );
+                  self.raw = JSON.stringify(self.json, null, 2);
                 }
               });
           } else if (metadata.format === 'xml') {
             self.$store
-              .dispatch('crud/' + self.type + '/view', { id: self.id, view: 'indent' })
+              .dispatch('crud/' + self.type + '/view', {
+                id: self.id,
+                view: 'indent'
+              })
               .then(function(response) {
                 if (!response.isError) {
                   self.raw = response.response;

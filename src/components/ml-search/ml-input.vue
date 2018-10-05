@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "ml-input",
+  name: 'ml-input',
   props: {
     qtext: {
       type: String
@@ -45,15 +45,15 @@ export default {
   },
   data() {
     return {
-      tmpQtext: this.qtext || "",
+      tmpQtext: this.qtext || '',
       suggestions: [],
       loadingSuggestions: false
     };
   },
   methods: {
     clear() {
-      console.log("Empty search");
-      this.tmpQtext = "";
+      console.log('Empty search');
+      this.tmpQtext = '';
       this.hideSuggestions();
       if (this.$store.state.search) {
         this.search(this.tmpQtext);
@@ -67,25 +67,25 @@ export default {
       });
     },
     selectSuggestion(s) {
-      console.log("Selected suggestion " + s);
+      console.log('Selected suggestion ' + s);
       this.tmpQtext = s;
       this.resolveSuggest(this.tmpQtext);
       this.focusToInput();
     },
     focusToSuggestions() {
       if (this.suggestions.length) {
-        console.log("Focus to suggestions");
+        console.log('Focus to suggestions');
         this.$refs.suggestions.focus();
       } else {
         this.resolveSuggest(this.tmpQtext);
       }
     },
     focusToInput() {
-      console.log("Focus to input");
+      console.log('Focus to input');
       this.$refs.input.focus();
     },
     hideSuggestions() {
-      console.log("Hide suggestions");
+      console.log('Hide suggestions');
       this.suggestions = [];
       this.focusToInput();
     }

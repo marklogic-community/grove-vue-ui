@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import mlChiclets from "@/components/ml-search/ml-chiclets.vue";
+import mlChiclets from '@/components/ml-search/ml-chiclets.vue';
 
 export default {
-  name: "ml-facets",
+  name: 'ml-facets',
   components: {
     mlChiclets
   },
@@ -63,10 +63,12 @@ export default {
 
 <style lang="less" scoped>
 .facet-list {
-  .facet-add-pos, .facet-add-neg {
+  .facet-add-pos,
+  .facet-add-neg {
     visibility: hidden;
   }
-  span:hover > .facet-add-pos, div:hover > .facet-add-neg {
+  span:hover > .facet-add-pos,
+  div:hover > .facet-add-neg {
     visibility: visible !important;
   }
 }

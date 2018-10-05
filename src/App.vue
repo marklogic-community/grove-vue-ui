@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import "vue-toast/dist/vue-toast.min.css";
-import BreadCrumbs from "@/components/BreadCrumbs.vue";
-import Header from "@/components/Header.vue";
-import mlFooter from "@/components/ml-footer.vue";
-import VueToast from "vue-toast";
+import 'vue-toast/dist/vue-toast.min.css';
+import BreadCrumbs from '@/components/BreadCrumbs.vue';
+import Header from '@/components/Header.vue';
+import mlFooter from '@/components/ml-footer.vue';
+import VueToast from 'vue-toast';
 import tinymce from 'tinymce/tinymce';
 import 'tinymce/themes/modern/theme';
 
@@ -31,12 +31,12 @@ import 'tinymce/plugins/paste';
 import 'tinymce/plugins/link';
 
 tinymce.init({
-    selector: '#tiny',
-    plugins: ['paste', 'link']
+  selector: '#tiny',
+  plugins: ['paste', 'link']
 });
 
 export default {
-  name: "app",
+  name: 'app',
   mounted() {
     this.$refs.toast.setOptions({
       position: 'right top'

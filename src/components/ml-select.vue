@@ -13,6 +13,6 @@
 
 <script>
 export default {
-  name: "ml-select"
+  name: 'ml-select'
 };
 </script>

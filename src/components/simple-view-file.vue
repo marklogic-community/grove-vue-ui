@@ -37,17 +37,17 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Highlight from "vue-hljs";
+import Vue from 'vue';
+import Highlight from 'vue-hljs';
 
-import "vue-hljs/dist/vue-hljs.min.css";
-import "highlight.js/styles/github.css";
+import 'vue-hljs/dist/vue-hljs.min.css';
+import 'highlight.js/styles/github.css';
 
 // attribute directives like Highlight require different registration
 Vue.use(Highlight);
 
 export default {
-  name: "simple-view-file",
+  name: 'simple-view-file',
   components: {},
   props: {
     uri: {
@@ -64,7 +64,7 @@ export default {
     fileName: {
       type: String,
       default() {
-        return this.uri.split("/").pop();
+        return this.uri.split('/').pop();
       }
     }
   },
@@ -76,11 +76,14 @@ export default {
   },
   computed: {
     fileType() {
-      var type = "other";
+      var type = 'other';
       if (/[\+\/](html|json|pdf|xhtml|xml)$/.test(this.contentType)) {
-        type = this.contentType.split("/").pop().replace("xhmtml", "html");
+        type = this.contentType
+          .split('/')
+          .pop()
+          .replace('xhmtml', 'html');
       } else if (/^(audio|image|text|video|xml)\//.test(this.contentType)) {
-        type = this.contentType.split("/")[0];
+        type = this.contentType.split('/')[0];
       } else if (/^application\//.test(this.contentType)) {
         // TODO
       }
@@ -91,7 +94,7 @@ export default {
     updateContent() {
       this.loading = true;
       this.$http({
-        method: "GET",
+        method: 'GET',
         url: this.uri,
         auth: {
           username: this.$store.state.auth.username,
@@ -109,9 +112,9 @@ export default {
         }
       );
     },
-		error: function(err) {
-			console.log(err);
-		}
+    error: function(err) {
+      console.log(err);
+    }
   },
   watch: {
     uri(newUri) {

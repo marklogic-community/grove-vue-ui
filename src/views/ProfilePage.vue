@@ -55,19 +55,18 @@
 </template>
 
 <script>
-
 import { required, email } from 'vuelidate/lib/validators';
 
 export default {
-  name: "ProfilePage",
+  name: 'ProfilePage',
   data() {
     return {
       tmpProfile: this.initProfile(this.$store.state.auth.profile)
     };
   },
   validations: {
-    tmpProfile : {
-      emails : {
+    tmpProfile: {
+      emails: {
         $each: {
           required,
           email
@@ -77,7 +76,7 @@ export default {
   },
   computed: {
     previousRoute() {
-      return this.$store.state.route.from
+      return this.$store.state.route.from;
     },
     authenticated() {
       return this.$store.state.auth.authenticated;
@@ -89,29 +88,36 @@ export default {
   methods: {
     initProfile(profile) {
       var tmpProfile = JSON.parse(JSON.stringify(profile || {}));
-      if(!tmpProfile.emails) {
+      if (!tmpProfile.emails) {
         tmpProfile.emails = [];
       }
       return tmpProfile;
     },
     addEmail() {
-      this.tmpProfile.emails.push("");
+      this.tmpProfile.emails.push('');
     },
     removeEmail(index) {
       this.tmpProfile.emails.splice(index, 1);
     },
     submit() {
       var self = this;
-      if(self.$v.$invalid) {
+      if (self.$v.$invalid) {
         return;
       }
       const toast = self.$parent.$refs.toast;
-      self.$store.dispatch("auth/update",self.tmpProfile).then(error => {
+      self.$store.dispatch('auth/update', self.tmpProfile).then(error => {
         if (error) {
-          toast.showToast('Failed to update the user profile', { theme: 'error' });
+          toast.showToast('Failed to update the user profile', {
+            theme: 'error'
+          });
         } else {
-          toast.showToast('Successfully updated the user profile', { theme: 'success' });
-          self.$router.push({ name: self.previousRoute.name, params: self.previousRoute.params });
+          toast.showToast('Successfully updated the user profile', {
+            theme: 'success'
+          });
+          self.$router.push({
+            name: self.previousRoute.name,
+            params: self.previousRoute.params
+          });
         }
       });
     }

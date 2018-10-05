@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "friendly-json",
+  name: 'friendly-json',
   props: {
     json: {
       type: Object,
@@ -40,7 +40,7 @@ export default {
       return Array.isArray(arr) || arr instanceof Array;
     },
     isFunction(value) {
-      return typeof value === "function";
+      return typeof value === 'function';
     },
     isObject(value) {
       return value !== null && typeof value === 'object';
@@ -50,18 +50,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .dl-horizontal {
-    margin: 0;
+.dl-horizontal {
+  margin: 0;
 
-    dt {
-      width: 100px;
-      text-align: left;
-    }
-    dd {
-      margin-left: 20px;
-    }
-    .dl-horizontal {
-      margin-bottom: 0;
-    }
+  dt {
+    width: 100px;
+    text-align: left;
   }
+  dd {
+    margin-left: 20px;
+  }
+  .dl-horizontal {
+    margin-bottom: 0;
+  }
+}
 </style>

@@ -1,4 +1,4 @@
-import $http from "axios";
+import $http from 'axios';
 
 function plugin(Vue) {
   if (plugin.installed) {

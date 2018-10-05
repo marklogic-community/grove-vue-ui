@@ -12,12 +12,12 @@
 
 <script>
 export default {
-  name: "ml-similar",
+  name: 'ml-similar',
   props: {
     title: {
       type: String,
       default() {
-        return "";
+        return '';
       }
     },
     uri: {
@@ -29,17 +29,17 @@ export default {
     return {
       loading: false,
       similar: []
-    }
+    };
   },
   methods: {
     updateSimilar() {
       if (this.uri) {
         this.loading = true;
         this.$http({
-          method: "GET",
-          url: "/v1/resources/extsimilar",
+          method: 'GET',
+          url: '/v1/resources/extsimilar',
           params: {
-            "rs:uri": this.uri
+            'rs:uri': this.uri
           },
           auth: {
             username: this.$store.state.auth.username,

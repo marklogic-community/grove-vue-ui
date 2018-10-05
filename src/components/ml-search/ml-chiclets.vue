@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "ml-chiclets",
+  name: 'ml-chiclets',
   props: {
     activeFacets: {
       type: Object,

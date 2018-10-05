@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import _ from "lodash";
+import _ from 'lodash';
 
 const data = {
   history: []
 };
 
 export default {
-  name: "BreadCrumbs",
+  name: 'BreadCrumbs',
   data() {
     return data;
   },
@@ -48,5 +48,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

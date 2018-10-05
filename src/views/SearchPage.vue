@@ -32,20 +32,20 @@
 </template>
 
 <script>
-import mlFacets from "@/components/ml-search/ml-facets.vue";
-import mlInput from "@/components/ml-search/ml-input.vue";
-import mlMetrics from "@/components/ml-search/ml-metrics.vue";
-import mlResults from "@/components/ml-search/ml-results.vue";
-import mlSelect from "@/components/ml-select.vue";
-import SearchApi from "@/api/SearchApi.js";
+import mlFacets from '@/components/ml-search/ml-facets.vue';
+import mlInput from '@/components/ml-search/ml-input.vue';
+import mlMetrics from '@/components/ml-search/ml-metrics.vue';
+import mlResults from '@/components/ml-search/ml-results.vue';
+import mlSelect from '@/components/ml-select.vue';
+import SearchApi from '@/api/SearchApi.js';
 
 export default {
-  name: "SearchPage",
+  name: 'SearchPage',
   props: ['type'],
   data() {
     return {
       searchPending: false
-    }
+    };
   },
   components: {
     mlFacets,
@@ -105,46 +105,54 @@ export default {
   },
   methods: {
     toggleFacet(facet, type, value) {
-      console.log("Toggle " + facet + " " + type + " " + value);
+      console.log('Toggle ' + facet + ' ' + type + ' ' + value);
       this.searchPending = true;
-      this.$store.dispatch("search/" + this.type + "/toggleFacet", {
-        facet,
-        type,
-        value
-      }).then(() => {
-        this.searchPending = false;
-      });
+      this.$store
+        .dispatch('search/' + this.type + '/toggleFacet', {
+          facet,
+          type,
+          value
+        })
+        .then(() => {
+          this.searchPending = false;
+        });
     },
     toggleNegatedFacet(facet, type, value) {
-      console.log("Negate " + facet + " " + type + " " + value);
+      console.log('Negate ' + facet + ' ' + type + ' ' + value);
       this.searchPending = true;
-      this.$store.dispatch("search/" + this.type + "/toggleFacet", {
-        facet,
-        type,
-        value,
-        negated: true
-      }).then(() => {
-        this.searchPending = false;
-      });
+      this.$store
+        .dispatch('search/' + this.type + '/toggleFacet', {
+          facet,
+          type,
+          value,
+          negated: true
+        })
+        .then(() => {
+          this.searchPending = false;
+        });
     },
     pageChanged(page) {
-      console.log("Paging to " + page);
+      console.log('Paging to ' + page);
       this.searchPending = true;
-      this.$store.dispatch("search/" + this.type + "/paginate", { page }).then(() => {
-        this.searchPending = false;
-      });
+      this.$store
+        .dispatch('search/' + this.type + '/paginate', { page })
+        .then(() => {
+          this.searchPending = false;
+        });
     },
     search(qtext) {
-      console.log("Searching for " + qtext);
+      console.log('Searching for ' + qtext);
       this.searchPending = true;
-      this.$store.dispatch("search/" + this.type + "/search", {
-        qtext
-      }).then(() => {
-        this.searchPending = false;
-      });
+      this.$store
+        .dispatch('search/' + this.type + '/search', {
+          qtext
+        })
+        .then(() => {
+          this.searchPending = false;
+        });
     },
     suggest(val) {
-      console.log("Suggest " + val);
+      console.log('Suggest ' + val);
       return SearchApi.suggest(this.type, val).then(response => {
         return response.suggestions;
       });

@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "UserMenu",
+  name: 'UserMenu',
   computed: {
     isLoggedIn() {
       return this.$store.state.auth.authenticated;
@@ -28,16 +28,19 @@ export default {
     },
     username() {
       return this.$store.state.auth.username;
-    },
+    }
   },
   methods: {
     logout() {
-      this.$store.dispatch("auth/logout").then(() => {
-        if (this.$route.meta.requiresLogin || this.$route.meta.requiresUpdates) {
+      this.$store.dispatch('auth/logout').then(() => {
+        if (
+          this.$route.meta.requiresLogin ||
+          this.$route.meta.requiresUpdates
+        ) {
           this.$router.push({ name: 'root.landing' });
         }
       });
-    },
+    }
   }
 };
 </script>

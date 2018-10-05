@@ -25,10 +25,10 @@
 
 <script>
 export default {
-  name: "LoginPage",
-  beforeRouteUpdate (to, from, next) {
-    this.user = "";
-    this.pass = "";
+  name: 'LoginPage',
+  beforeRouteUpdate(to, from, next) {
+    this.user = '';
+    this.pass = '';
     this.pending = false;
     this.hasLoginSuccess = false;
     this.hasLoginError = false;
@@ -38,8 +38,8 @@ export default {
   },
   data() {
     return {
-      user: "",
-      pass: "",
+      user: '',
+      pass: '',
       pending: false,
       hasLoginSuccess: false,
       hasLoginError: false,
@@ -66,28 +66,36 @@ export default {
       self.hasLogoutSuccess = false;
       self.hasLogoutError = false;
 
-      self.$store.dispatch("auth/login", {
-        user: self.user,
-        pass: self.pass
-      }).then(function(error) {
-        self.pending = false;
-        if (error) {
-          self.hasLoginError = true;
-        } else {
-          self.hasLoginSuccess = true;
-          if (self.$route.params && self.$route.params.state) {
-            self.$router.push({ name: self.$route.params.state, params: self.$route.params.params });
+      self.$store
+        .dispatch('auth/login', {
+          user: self.user,
+          pass: self.pass
+        })
+        .then(function(error) {
+          self.pending = false;
+          if (error) {
+            self.hasLoginError = true;
+          } else {
+            self.hasLoginSuccess = true;
+            if (self.$route.params && self.$route.params.state) {
+              self.$router.push({
+                name: self.$route.params.state,
+                params: self.$route.params.params
+              });
+            }
           }
-        }
-      });
+        });
     },
     doCancel() {
       var self = this;
-      self.$store.dispatch("auth/cancelLogin").then((error) => {
+      self.$store.dispatch('auth/cancelLogin').then(error => {
         if (self.$route.params && self.$route.params.state) {
-          self.$router.push({ name: self.$route.params.state, params: self.$route.params.params });
+          self.$router.push({
+            name: self.$route.params.state,
+            params: self.$route.params.params
+          });
         } else {
-          self.$router.push({ name: "root.landing" });
+          self.$router.push({ name: 'root.landing' });
         }
       });
     },
@@ -101,8 +109,7 @@ export default {
       self.hasLogoutSuccess = false;
       self.hasLogoutError = false;
 
-      self.$store.dispatch("auth/logout")
-      .then(function(error) {
+      self.$store.dispatch('auth/logout').then(function(error) {
         self.pending = false;
         if (error) {
           self.hasLogoutError = true;

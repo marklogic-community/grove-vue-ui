@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "ml-metrics",
+  name: 'ml-metrics',
   props: {
     metrics: {
       type: Object,

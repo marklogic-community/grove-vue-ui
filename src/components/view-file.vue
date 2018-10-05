@@ -119,22 +119,22 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Highlight from "vue-hljs";
-import Pdf from 'vue-pdf'
-import TreeView from "vue-json-tree-view";
+import Vue from 'vue';
+import Highlight from 'vue-hljs';
+import Pdf from 'vue-pdf';
+import TreeView from 'vue-json-tree-view';
 
-import friendlyJson from "@/components/friendly-json.vue";
-import friendlyXml from "@/components/friendly-xml.vue";
+import friendlyJson from '@/components/friendly-json.vue';
+import friendlyXml from '@/components/friendly-xml.vue';
 
-import "vue-hljs/dist/vue-hljs.min.css";
-import "highlight.js/styles/github.css";
+import 'vue-hljs/dist/vue-hljs.min.css';
+import 'highlight.js/styles/github.css';
 
 // attribute directives like Highlight require different registration
 Vue.use(Highlight);
 
 export default {
-  name: "view-file",
+  name: 'view-file',
   components: {
     friendlyJson,
     friendlyXml,
@@ -168,7 +168,7 @@ export default {
     fileName: {
       type: String,
       default() {
-        return this.uri.split("/").pop();
+        return this.uri.split('/').pop();
       }
     },
     showCode: {
@@ -196,11 +196,14 @@ export default {
   },
   computed: {
     fileType() {
-      var type = "other";
+      var type = 'other';
       if (/[\+\/](html|json|pdf|xhtml|xml)$/.test(this.contentType)) {
-        type = this.contentType.split("/").pop().replace("xhmtml", "html");
+        type = this.contentType
+          .split('/')
+          .pop()
+          .replace('xhmtml', 'html');
       } else if (/^(audio|image|text|video|xml)\//.test(this.contentType)) {
-        type = this.contentType.split("/")[0];
+        type = this.contentType.split('/')[0];
       } else if (/^application\//.test(this.contentType)) {
         // TODO
       }
@@ -213,12 +216,12 @@ export default {
     },
     showModal() {
       // TODO
-      console.log("view-file: showModal not implemented yet!");
+      console.log('view-file: showModal not implemented yet!');
     },
     updateContent() {
       this.loading = true;
       this.$http({
-        method: "GET",
+        method: 'GET',
         url: this.uri,
         auth: {
           username: this.$store.state.auth.username,
@@ -236,9 +239,9 @@ export default {
         }
       );
     },
-		error: function(err) {
-			console.log(err);
-		}
+    error: function(err) {
+      console.log(err);
+    }
   },
   watch: {
     uri(newUri) {
@@ -272,7 +275,8 @@ export default {
       overflow: hidden;
       max-height: 600px;
 
-      hljs pre, .hljs pre {
+      hljs pre,
+      .hljs pre {
         overflow: scroll;
         max-height: 600px;
       }
