@@ -149,7 +149,7 @@ export default {
           if (metadata.permissions.length === 0) {
             delete metadata.permissions;
           }
-          if (Object.keys(metadata.metadataValues).length === 0) {
+          if (metadata.metadataValues && Object.keys(metadata.metadataValues).length === 0) {
             delete metadata.metadataValues;
           }
           self.metadata = metadata;
