@@ -42,7 +42,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">About</label>
           <div class="col-sm-10">
-            <Editor :init="{editorOptions}" v-model="person.about"></Editor>
+            <Editor :init="editorOptions" v-model="person.about"></Editor>
           </div>
         </div>
         <div class="form-group">
@@ -245,7 +245,8 @@ export default {
     return {
       person: this.initPerson(),
       editorOptions: {
-        plugins: 'advlist autolink link image lists charmap print preview'
+        plugins: '',//'advlist autolink link image lists charmap print preview',
+        skin_url: '/skins/lightgray'
       },
       newTag: null
     };
