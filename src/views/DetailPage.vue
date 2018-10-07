@@ -187,8 +187,8 @@ export default {
             ', are you sure?'
         )
       ) {
-        const toast = self.$parent.$refs.toast;
         const self = this;
+        const toast = self.$parent.$refs.toast;
         self.$store
           .dispatch('crud/' + this.type + '/delete', { id: self.id })
           .then(function(error) {
