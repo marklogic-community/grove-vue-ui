@@ -105,7 +105,11 @@ export default {
     }).then(
       response => {
         return response.text().then(text => {
-          return { isError: false, response: text };
+          if (response.status === 204) {
+            return { isError: false, response: text };
+          } else {
+            return { isError: true, error: text };
+          }
         });
       },
       error => {

@@ -96,6 +96,11 @@ export default {
       this.page = this.$store.getters['search/' + this.type + '/page'] || 1;
     }
   },
+  mounted() {
+    if (this.$route.params && this.$route.params.refresh) {
+      this.search();
+    }
+  },
   watch: {
     isLoggedIn: function(isLoggedIn) {
       if (isLoggedIn) {

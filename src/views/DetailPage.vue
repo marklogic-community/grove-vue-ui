@@ -149,7 +149,10 @@ export default {
           if (metadata.permissions.length === 0) {
             delete metadata.permissions;
           }
-          if (metadata.metadataValues && Object.keys(metadata.metadataValues).length === 0) {
+          if (
+            metadata.metadataValues &&
+            Object.keys(metadata.metadataValues).length === 0
+          ) {
             delete metadata.metadataValues;
           }
           self.metadata = metadata;
@@ -191,8 +194,8 @@ export default {
         const toast = self.$parent.$refs.toast;
         self.$store
           .dispatch('crud/' + this.type + '/delete', { id: self.id })
-          .then(function(error) {
-            if (error) {
+          .then(function(response) {
+            if (response.isError) {
               toast.showToast('Failed to delete the document', {
                 theme: 'error'
               });
@@ -201,8 +204,13 @@ export default {
                 theme: 'success'
               });
               self.$router.push({
-                name: self.previousRoute.name,
-                params: self.previousRoute.params
+                name: self.previousRoute
+                  ? self.previousRoute.name
+                  : 'root.search',
+                params: {
+                  refresh: true,
+                  ...(self.previousRoute ? self.previousRoute.params : {})
+                }
               });
             }
           });

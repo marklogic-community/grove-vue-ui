@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     hasNonSelectedValues(facet) {
-      return facet.facetValues.filter(value => {
+      return (facet.facetValues || []).filter(value => {
         return !value.selected;
       }).length;
     }
