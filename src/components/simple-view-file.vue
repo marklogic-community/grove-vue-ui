@@ -77,7 +77,7 @@ export default {
   computed: {
     fileType() {
       var type = 'other';
-      if (/[\+\/](html|json|pdf|xhtml|xml)$/.test(this.contentType)) {
+      if (/[+/](html|json|pdf|xhtml|xml)$/.test(this.contentType)) {
         type = this.contentType
           .split('/')
           .pop()

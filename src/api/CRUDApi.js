@@ -15,11 +15,11 @@ function buildUrl(path, params) {
   return url;
 }
 
-// copied from Angular.js
-function isObject(value) {
-  // http://jsperf.com/isobject4
-  return value !== null && typeof value === 'object';
-}
+// // copied from Angular.js
+// function isObject(value) {
+//   // http://jsperf.com/isobject4
+//   return value !== null && typeof value === 'object';
+// }
 
 export default {
   name: 'CRUDApi',

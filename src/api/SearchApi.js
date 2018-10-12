@@ -124,7 +124,7 @@ export default {
     searchType = searchType !== undefined ? searchType : 'all';
     ptext = ptext !== undefined ? ptext : '';
 
-    var facets = Object.keys(activeFacets || {}).map(function(facetName) {
+    /*var facets =*/ Object.keys(activeFacets || {}).map(function(facetName) {
       var constraintType = activeFacets[facetName].type;
       if (constraintType && constraintType.substring(0, 3) === 'xs:') {
         constraintType = 'range';

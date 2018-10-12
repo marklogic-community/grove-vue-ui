@@ -224,7 +224,6 @@ import {
   numeric,
   email
 } from 'vuelidate/lib/validators';
-import * as uuid from 'uuid';
 import crudApi from '@/api/CRUDApi.js';
 
 const x2js = new X2JS();
@@ -377,7 +376,7 @@ export default {
         return;
       }
       const toast = this.$parent.$refs.toast;
-      var extension = '.json';
+      //var extension = '.json';
       var data = this.person;
       // if (this.person.docFormat === 'xml') {
       //   extension = '.xml';

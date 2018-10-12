@@ -88,7 +88,7 @@ export default {
     },
     doCancel() {
       var self = this;
-      self.$store.dispatch('auth/cancelLogin').then(error => {
+      self.$store.dispatch('auth/cancelLogin').then(() => {
         if (self.$route.params && self.$route.params.state) {
           self.$router.push({
             name: self.$route.params.state,
