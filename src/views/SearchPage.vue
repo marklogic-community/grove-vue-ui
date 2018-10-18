@@ -4,8 +4,12 @@
       <div class="col-xs-12 search-row">
         <ml-input :qtext="qtext" :search="search" :suggest="suggest" class="search"></ml-input>
       </div>
+
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
+          <!--// COMMENT the next line to enable facet typeahead-->
         <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
+          <!--// UNCOMMENT the next line to enable facet typeahead-->
+        <!--<ml-facets-suggestions v-if="facets" :facets="facets" :toggle="toggleFacet" v-on:toggleFacet="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet" :type="type"></ml-facets-suggestions>-->
       </div>
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
