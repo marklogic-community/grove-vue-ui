@@ -42,6 +42,7 @@ import mlMetrics from '@/components/ml-search/ml-metrics.vue';
 import mlResults from '@/components/ml-search/ml-results.vue';
 import mlSelect from '@/components/ml-select.vue';
 import SearchApi from '@/api/SearchApi.js';
+import mlFacetsSuggestions from '@/components/ml-search/ml-facets-suggestions.vue';
 
 export default {
   name: 'SearchPage',
@@ -56,7 +57,8 @@ export default {
     mlInput,
     mlMetrics,
     mlResults,
-    mlSelect
+    mlSelect,
+    mlFacetsSuggestions
   },
   computed: {
     isLoggedIn() {
