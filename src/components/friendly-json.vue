@@ -1,7 +1,7 @@
 <template>
   <dl class="dl-horizontal">
-    <span v-for="(val, key, $index) in json" :key="$index" v-show="!((isFunction(val)) || (key.startsWith('_') && key !== '__text'))">
-      <dt>{{ key.startsWith('__') ? key.replace('__', '') : key }}</dt>
+    <span v-for="(val, key, $index) in json" :key="$index" v-show="!((isFunction(val)) || ((''+key).startsWith('_') && key !== '__text'))">
+      <dt>{{ (''+key).startsWith('__') ? key.replace('__', '') : key }}</dt>
       <!-- simple value -->
       <dd v-if="!isObject(val)">{{ val !== '' ? val : '&#160;' }}</dd>
       <!-- array or object -->
@@ -30,7 +30,7 @@ export default {
   name: 'friendly-json',
   props: {
     json: {
-      type: Object,
+      type: [Object, Array],
       required: true
     }
   },
