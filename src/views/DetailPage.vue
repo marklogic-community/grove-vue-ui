@@ -3,7 +3,7 @@
     <div class="col-sm-8 content-col">
       <h3>{{ metadata.fileName }} ({{ metadata.contentType }})</h3>
       <div class="card">
-        <b-tabs card no-fade>
+        <b-tabs card no-fade v-model="tabIndex">
           <b-tab title="Details" active>
             <dl class="row">
               <dt v-show="metadata.collections" class="col-sm-2">Collections</dt>
@@ -105,10 +105,12 @@ export default {
   },
   props: ['type', 'id'],
   data() {
+    const self = this;
     return {
       metadata: {},
       json: undefined,
-      raw: undefined
+      raw: undefined,
+      tabIndex: 0
     };
   },
   computed: {
@@ -130,15 +132,15 @@ export default {
   },
   methods: {
     update() {
-      var self = this;
+      const self = this;
 
       self.metadata = {};
       self.json = undefined;
       self.raw = undefined;
 
       this.$store
-        .dispatch('crud/' + this.type + '/view', {
-          id: this.id,
+        .dispatch('crud/' + self.type + '/view', {
+          id: self.id,
           view: 'metadata'
         })
         .then(function(response) {
@@ -191,17 +193,17 @@ export default {
         });
     },
     deleteDoc() {
+      const self = this;
       if (
         window.confirm(
           'This will permanently delete ' +
-            this.metadata.fileName +
+            self.metadata.fileName +
             ', are you sure?'
         )
       ) {
-        const self = this;
         const toast = self.$parent.$refs.toast;
         self.$store
-          .dispatch('crud/' + this.type + '/delete', { id: self.id })
+          .dispatch('crud/' + self.type + '/delete', { id: self.id })
           .then(function(response) {
             if (response.isError) {
               toast.showToast('Failed to delete the document', {
