@@ -7,9 +7,11 @@
 
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
           <!--// COMMENT the next line to enable facet typeahead-->
-        <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
+        <!--
+          <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
+        -->
           <!--// UNCOMMENT the next line to enable facet typeahead-->
-        <!--<ml-facets-suggestions v-if="facets" :facets="facets" :toggle="toggleFacet" v-on:toggleFacet="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet" :type="type"></ml-facets-suggestions>-->
+        <ml-facets-suggestions v-if="facets" :facets="facets" :toggle="toggleFacet" v-on:toggleFacet="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet" :type="type"></ml-facets-suggestions>
       </div>
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
@@ -36,6 +38,7 @@
 </template>
 
 <script>
+//import mlFacets from '@/components/ml-search/ml-facets.vue';
 import mlFacets from '@/components/ml-search/ml-facets.vue';
 import mlInput from '@/components/ml-search/ml-input.vue';
 import mlMetrics from '@/components/ml-search/ml-metrics.vue';
@@ -54,6 +57,7 @@ export default {
   },
   components: {
     mlFacets,
+    mlFacetsSuggestions,
     mlInput,
     mlMetrics,
     mlResults,

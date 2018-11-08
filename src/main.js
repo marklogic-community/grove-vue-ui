@@ -9,7 +9,7 @@ import store from './store';
 import './registerServiceWorker';
 import './styles/main.less';
 // UNCOMMENT the next line to enable facet typeahead
-// import 'vue-multiselect/dist/vue-multiselect.min.css';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 //import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';

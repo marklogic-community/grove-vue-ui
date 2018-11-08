@@ -48,8 +48,8 @@
     data() {
       return {
         selected: '',
-        suggestions: this.facet.facetValues,
-        options: Vue.util.extend({}, this.facet).facetValues,
+        suggestions: this.facet.facetValues || [],
+        //options: Vue.util.extend({}, this.facet).facetValues,
         debounceMilliseconds: 50,
         limit: 10
       };
@@ -57,7 +57,7 @@
     watch: {
       facet () {
         if (this.facet) {
-          this.suggestions = this.facet.facetValues
+          this.suggestions = this.facet.facetValues || [];
         }
       }
     },
