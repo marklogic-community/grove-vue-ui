@@ -62,7 +62,7 @@
               </view-binary>
             </div>
           </b-tab>
-          <b-tab title="Raw" v-if="raw">
+          <b-tab title="Raw" v-show="raw">
             <pre>{{ raw }}</pre>
           </b-tab>
         </b-tabs>
