@@ -6,13 +6,15 @@
       </div>
 
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
-          <!--// COMMENT the next line to enable facet typeahead-->
-        <!--
-          <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
-        -->
-          <!--// UNCOMMENT the next line to enable facet typeahead-->
-        <ml-facets-suggestions v-if="facets" :facets="facets" :toggle="toggleFacet" v-on:toggleFacet="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet" :type="type"></ml-facets-suggestions>
+        <div class="facet-list" v-if="facets">
+          <ml-chiclets :active-facets="activeFacets" :toggle="toggleFacet"></ml-chiclets>
+
+          <div v-for="(facet, facetName, $index) in facets" :key="$index">
+            <ml-facet :facet="facet" :toggle="toggleFacet" :negate="toggleNegatedFacet" :suggest="suggestFacet"></ml-facet>
+          </div>
+        </div>
       </div>
+
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
           v-on:click.prevent="$forceUpdate()"></i>
@@ -38,38 +40,41 @@
 </template>
 
 <script>
-//import mlFacets from '@/components/ml-search/ml-facets.vue';
-import mlFacets from '@/components/ml-search/ml-facets.vue';
+import mlChiclets from '@/components/ml-search/ml-chiclets.vue';
+import mlFacet from '@/components/ml-search/ml-facet.vue';
 import mlInput from '@/components/ml-search/ml-input.vue';
 import mlMetrics from '@/components/ml-search/ml-metrics.vue';
 import mlResults from '@/components/ml-search/ml-results.vue';
 import mlSelect from '@/components/ml-select.vue';
 import SearchApi from '@/api/SearchApi.js';
-import mlFacetsSuggestions from '@/components/ml-search/ml-facets-suggestions.vue';
 
 export default {
   name: 'SearchPage',
-  props: ['type'],
+  props: {
+    searchType: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       searchPending: false
     };
   },
   components: {
-    mlFacets,
-    mlFacetsSuggestions,
+    mlChiclets,
+    mlFacet,
     mlInput,
     mlMetrics,
     mlResults,
-    mlSelect,
-    mlFacetsSuggestions
+    mlSelect
   },
   computed: {
     isLoggedIn() {
       return this.$store.state.auth.authenticated;
     },
     searchState() {
-      return this.$store.state.search[this.type];
+      return this.$store.state.search[this.searchType];
     },
     facets() {
       return this.searchState.facets || {};
@@ -103,7 +108,7 @@ export default {
   },
   created() {
     if (this.isLoggedIn) {
-      this.page = this.$store.getters['search/' + this.type + '/page'] || 1;
+      this.page = this.$store.getters['search/' + this.searchType + '/page'] || 1;
     }
   },
   mounted() {
@@ -122,8 +127,8 @@ export default {
     toggleFacet(facet, type, value) {
       console.log('Toggle ' + facet + ' ' + type + ' ' + value);
       this.searchPending = true;
-      this.$store
-        .dispatch('search/' + this.type + '/toggleFacet', {
+      return this.$store
+        .dispatch('search/' + this.searchType + '/toggleFacet', {
           facet,
           type,
           value
@@ -135,8 +140,8 @@ export default {
     toggleNegatedFacet(facet, type, value) {
       console.log('Negate ' + facet + ' ' + type + ' ' + value);
       this.searchPending = true;
-      this.$store
-        .dispatch('search/' + this.type + '/toggleFacet', {
+      return this.$store
+        .dispatch('search/' + this.searchType + '/toggleFacet', {
           facet,
           type,
           value,
@@ -149,8 +154,8 @@ export default {
     pageChanged(page) {
       console.log('Paging to ' + page);
       this.searchPending = true;
-      this.$store
-        .dispatch('search/' + this.type + '/paginate', { page })
+      return this.$store
+        .dispatch('search/' + this.searchType + '/paginate', { page })
         .then(() => {
           this.searchPending = false;
         });
@@ -158,8 +163,8 @@ export default {
     search(qtext) {
       console.log('Searching for ' + qtext);
       this.searchPending = true;
-      this.$store
-        .dispatch('search/' + this.type + '/search', {
+      return this.$store
+        .dispatch('search/' + this.searchType + '/search', {
           qtext
         })
         .then(() => {
@@ -168,8 +173,21 @@ export default {
     },
     suggest(val) {
       console.log('Suggest ' + val);
-      return SearchApi.suggest(this.type, val).then(response => {
-        return response.suggestions;
+      return SearchApi.suggest(this.searchType, val).then(response => {
+        return (response.suggestions || []);
+      });
+    },
+    suggestFacet(facetName, val) {
+      val = (val !== undefined) ? val : '';
+      console.log('Facet ' + facetName + ' suggest ' + val);
+      // TODO: find a way to get facet suggestions with counts!
+      return SearchApi.suggest(this.searchType, facetName + ':' + (val.length ? '"' : '') + val).then(response => {
+        return (response.suggestions || []).map(
+          suggestion => {
+            let name = suggestion.split(':')[1]
+            return {name: name, value: name};
+          }
+        );
       });
     }
   }

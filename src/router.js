@@ -69,7 +69,7 @@ const $router = new Router({
       component: () =>
         import(/* webpackChunkName: "search" */ './views/SearchPage.vue'),
       props: {
-        type: 'all'
+        searchType: 'all'
       },
       meta: {
         label: 'Search',

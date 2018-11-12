@@ -54,6 +54,20 @@ export default {
     }).then(
       response => {
         return response.json().then(function(json) {
+          Object.keys(json.facets || {}).forEach(key => {
+            var facet = json.facets[key];
+            facet.name = key;
+            (facet.facetValues || []).forEach(facetValue => {
+              let active =
+                activeFacets[key] &&
+                activeFacets[key].values.filter(activeValue => {
+                  return activeValue.value === facetValue.name;
+                }).length;
+              if (active) {
+                facetValue.selected = true;
+              }
+            });
+          });
           return { response: json };
         });
       },
