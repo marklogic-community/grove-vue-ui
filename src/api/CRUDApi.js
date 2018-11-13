@@ -24,10 +24,13 @@ function buildUrl(path, params) {
 export default {
   name: 'CRUDApi',
   view(crudType, id, view, params) {
-    return fetch(buildUrl(crudType + '/' + id + '/' + view, params), {
-      method: 'GET',
-      credentials: 'same-origin'
-    }).then(
+    return fetch(
+      buildUrl(crudType + '/' + encodeURIComponent(id) + '/' + view, params),
+      {
+        method: 'GET',
+        credentials: 'same-origin'
+      }
+    ).then(
       response => {
         return response.text().then(text => {
           return { isError: false, response: text };
@@ -39,15 +42,18 @@ export default {
     );
   },
   create(crudType, id, data, format, params) {
-    return fetch(buildUrl(crudType + (id ? '/' + id : ''), params), {
-      method: 'POST',
-      headers: {
-        'content-type':
-          'application/' + (format === 'binary' ? 'octet-stream' : format)
-      },
-      body: format === 'json' ? JSON.stringify(data) : data,
-      credentials: 'same-origin'
-    }).then(
+    return fetch(
+      buildUrl(crudType + (id ? '/' + encodeURIComponent(id) : ''), params),
+      {
+        method: 'POST',
+        headers: {
+          'content-type':
+            'application/' + (format === 'binary' ? 'octet-stream' : format)
+        },
+        body: format === 'json' ? JSON.stringify(data) : data,
+        credentials: 'same-origin'
+      }
+    ).then(
       response => {
         var id = response.headers.get('location');
         return response.text().then(text => {
@@ -64,7 +70,7 @@ export default {
     );
   },
   read(crudType, id, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildUrl(crudType + '/' + encodeURIComponent(id), params), {
       method: 'GET',
       credentials: 'same-origin'
     }).then(
@@ -79,7 +85,7 @@ export default {
     );
   },
   update(crudType, id, data, format, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildUrl(crudType + '/' + encodeURIComponent(id), params), {
       method: 'PUT',
       headers: {
         'content-type':
@@ -99,7 +105,7 @@ export default {
     );
   },
   delete(crudType, id, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildUrl(crudType + '/' + encodeURIComponent(id), params), {
       method: 'DELETE',
       credentials: 'same-origin'
     }).then(
