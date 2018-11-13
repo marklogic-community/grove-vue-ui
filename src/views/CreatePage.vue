@@ -42,7 +42,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">About</label>
           <div class="col-sm-10">
-            <Editor :init="editorOptions" v-model="person.about"></Editor>
+            <input type="text" class="form-control" v-model="person.about"/>
           </div>
         </div>
         <div class="form-group">
@@ -224,7 +224,6 @@ import {
   numeric,
   email
 } from 'vuelidate/lib/validators';
-import Editor from '@tinymce/tinymce-vue';
 import * as uuid from 'uuid';
 import crudApi from '@/api/CRUDApi.js';
 
@@ -232,9 +231,6 @@ const x2js = new X2JS();
 
 export default {
   name: 'CreatePage',
-  components: {
-    Editor
-  },
   props: ['type', 'id'],
   data() {
     if (this.id) {
@@ -244,10 +240,6 @@ export default {
     }
     return {
       person: this.initPerson(),
-      editorOptions: {
-        plugins: '',//'advlist autolink link image lists charmap print preview',
-        skin_url: '/skins/lightgray'
-      },
       newTag: null
     };
   },

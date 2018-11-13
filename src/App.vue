@@ -23,17 +23,6 @@ import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import Header from '@/components/Header.vue';
 import mlFooter from '@/components/ml-footer.vue';
 import VueToast from 'vue-toast';
-import tinymce from 'tinymce/tinymce';
-import 'tinymce/themes/modern/theme';
-
-// Any plugins you want to use has to be imported
-import 'tinymce/plugins/paste';
-import 'tinymce/plugins/link';
-
-tinymce.init({
-  selector: '#tiny',
-  plugins: ['paste', 'link']
-});
 
 export default {
   name: 'app',
