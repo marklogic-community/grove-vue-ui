@@ -42,7 +42,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">About</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" v-model="person.about"/>
+            <textarea rows="8" class="form-control" v-model="person.about"/>
           </div>
         </div>
         <div class="form-group">
