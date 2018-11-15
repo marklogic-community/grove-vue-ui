@@ -10,7 +10,7 @@
                 label="name"
                 track-by="name"
                 open-direction="bottom"
-                v-on:search-change.prevent="getSuggestions"
+                v-on:search-change="getSuggestions"
                 v-on:select="onSelected"
         >
         </multiselect>
@@ -61,7 +61,11 @@
         this.current = current;
         this.suggest(this.facet.name, current)
         .then(suggestions => {
-          self.suggestions = suggestions;
+          if (suggestions.length) {
+            self.suggestions = suggestions;
+          } else {
+            self.suggestions = [{ name: current + '* (no match)'}];
+          }
         });
       },
       nameWithCount(option) {

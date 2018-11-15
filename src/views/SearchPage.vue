@@ -181,7 +181,8 @@ export default {
       val = (val !== undefined) ? val : '';
       console.log('Facet ' + facetName + ' suggest ' + val);
       // TODO: find a way to get facet suggestions with counts!
-      return SearchApi.suggest(this.searchType, facetName + ':' + (val.length ? '"' : '') + val).then(response => {
+      // TODO: how to support typeahead for val with spaces? Supported at all?? " in front didn't help!
+      return SearchApi.suggest(this.searchType, facetName + ':' + val).then(response => {
         return (response.suggestions || []).map(
           suggestion => {
             let name = suggestion.split(':')[1]
