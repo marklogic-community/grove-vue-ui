@@ -5,14 +5,28 @@ polyfill();
 
 var api = '/api/crud/';
 
+// TODO: consider refactoring out to utils library with identical
+// function in grove-vue-visjs-graph
 function buildUrl(path, params) {
   var url = new URL(api + path, window.location.href);
   if (params) {
-    Object.keys(params).forEach(key =>
-      url.searchParams.append(key, params[key])
-    );
+    Object.keys(params).forEach(key => {
+      if (Array.isArray(params[key])) {
+        params[key].map(param => url.searchParams.append(key, param));
+      } else {
+        url.searchParams.append(key, params[key]);
+      }
+    });
   }
   return url;
+}
+
+function buildCrudUrl(crudType, id, params, view) {
+  const path =
+    crudType +
+    (id ? '/' + encodeURIComponent(id) : '') +
+    (view ? '/' + view : '');
+  return buildUrl(path, params);
 }
 
 // // copied from Angular.js
@@ -24,7 +38,7 @@ function buildUrl(path, params) {
 export default {
   name: 'CRUDApi',
   view(crudType, id, view, params) {
-    return fetch(buildUrl(crudType + '/' + id + '/' + view, params), {
+    return fetch(buildCrudUrl(crudType, id, params, view), {
       method: 'GET',
       credentials: 'same-origin'
     }).then(
@@ -39,7 +53,7 @@ export default {
     );
   },
   create(crudType, id, data, format, params) {
-    return fetch(buildUrl(crudType + (id ? '/' + id : ''), params), {
+    return fetch(buildCrudUrl(crudType, id, params), {
       method: 'POST',
       headers: {
         'content-type':
@@ -64,7 +78,7 @@ export default {
     );
   },
   read(crudType, id, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildCrudUrl(crudType, id, params), {
       method: 'GET',
       credentials: 'same-origin'
     }).then(
@@ -79,7 +93,7 @@ export default {
     );
   },
   update(crudType, id, data, format, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildCrudUrl(crudType, id, params), {
       method: 'PUT',
       headers: {
         'content-type':
@@ -99,7 +113,7 @@ export default {
     );
   },
   delete(crudType, id, params) {
-    return fetch(buildUrl(crudType + '/' + id, params), {
+    return fetch(buildCrudUrl(crudType, id, params), {
       method: 'DELETE',
       credentials: 'same-origin'
     }).then(
