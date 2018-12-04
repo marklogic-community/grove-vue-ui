@@ -3,8 +3,8 @@
     <i class="fa fa-refresh fa-spin pull-right" v-if="loading"></i>
     <h3 v-if="title">{{ title }}</h3>
     <ul>
-      <li v-for="(uri, $index) in similar" :key="$index">
-        <router-link :to="{ name: 'root.view', params: {uri: uri} }">{{ uri }}</router-link>
+      <li v-for="(result, $index) in similar" :key="$index">
+        <router-link :to="{ name: 'root.view', params: {id: result.id} }">{{ resultLabel(result) }}</router-link>
       </li>
     </ul>
   </div>
@@ -57,6 +57,9 @@ export default {
           }
         );
       }
+    },
+    resultLabel(result) {
+      return result.label || result.uri.split('/').pop();
     }
   },
   watch: {
