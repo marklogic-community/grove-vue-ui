@@ -3,8 +3,8 @@
     <i class="fa fa-refresh fa-spin pull-right" v-if="loading"></i>
     <h3 v-if="title">{{ title }}</h3>
     <ul>
-      <li v-for="(uri, $index) in similar" :key="$index">
-        <router-link :to="{ name: 'root.view', params: {uri: uri} }">{{ uri }}</router-link>
+      <li v-for="(result, $index) in similar" :key="$index">
+        <router-link :to="{ name: 'root.view', params: {id: result.id || encodeURIComponent(result) } }">{{ resultLabel(result) }}</router-link>
       </li>
     </ul>
   </div>
@@ -35,6 +35,7 @@ export default {
     updateSimilar() {
       if (this.uri) {
         this.loading = true;
+        // TODO: fetching similar docs needs a better middleware/backend solution
         this.$http({
           method: 'GET',
           url: '/v1/resources/extsimilar',
@@ -56,6 +57,13 @@ export default {
             this.loading = false;
           }
         );
+      }
+    },
+    resultLabel(result) {
+      if (result.label || result.uri) {
+        return result.label || result.uri.split('/').pop();
+      } else {
+        return result.split('/').pop();
       }
     }
   },

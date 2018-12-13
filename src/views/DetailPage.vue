@@ -125,63 +125,71 @@ export default {
       return this.viewUri + 'download=true';
     }
   },
-  created() {
-    var self = this;
-    this.$store
-      .dispatch('crud/' + this.type + '/view', {
-        id: this.id,
-        view: 'metadata'
-      })
-      .then(function(response) {
-        if (!response.isError) {
-          var metadata = JSON.parse(response.response);
-          var permissions = [];
-          // flatten permissions for simplified display
-          metadata.permissions.forEach(function(p) {
-            p.capabilities.forEach(function(c) {
-              permissions.push(p['role-name'] + ':' + c);
-            });
-          });
-          metadata.permissions = permissions;
-          if (metadata.collections.length === 0) {
-            delete metadata.collections;
-          }
-          if (metadata.permissions.length === 0) {
-            delete metadata.permissions;
-          }
-          if (
-            metadata.metadataValues &&
-            Object.keys(metadata.metadataValues).length === 0
-          ) {
-            delete metadata.metadataValues;
-          }
-          self.metadata = metadata;
-
-          if (metadata.format === 'json') {
-            self.$store
-              .dispatch('crud/' + self.type + '/read', { id: self.id })
-              .then(function(response) {
-                if (!response.isError) {
-                  self.json = JSON.parse(response.response);
-                  self.raw = JSON.stringify(self.json, null, 2);
-                }
-              });
-          } else if (metadata.format === 'xml') {
-            self.$store
-              .dispatch('crud/' + self.type + '/view', {
-                id: self.id,
-                view: 'indent'
-              })
-              .then(function(response) {
-                if (!response.isError) {
-                  self.raw = response.response;
-                }
-              });
-          }
-        }
-      });
+  mounted() {
+    this.update();
   },
   methods: {
+    update() {
+      var self = this;
+
+      self.metadata = {};
+      self.json = undefined;
+      self.raw = undefined;
+
+      this.$store
+        .dispatch('crud/' + this.type + '/view', {
+          id: this.id,
+          view: 'metadata'
+        })
+        .then(function(response) {
+          if (!response.isError) {
+            var metadata = JSON.parse(response.response);
+            var permissions = [];
+            // flatten permissions for simplified display
+            metadata.permissions.forEach(function(p) {
+              p.capabilities.forEach(function(c) {
+                permissions.push(p['role-name'] + ':' + c);
+              });
+            });
+            metadata.permissions = permissions;
+            if (metadata.collections.length === 0) {
+              delete metadata.collections;
+            }
+            if (metadata.permissions.length === 0) {
+              delete metadata.permissions;
+            }
+            if (
+              metadata.metadataValues &&
+              Object.keys(metadata.metadataValues).length === 0
+            ) {
+              delete metadata.metadataValues;
+            }
+            self.metadata = metadata;
+
+            if (metadata.format === 'json') {
+              self.$store
+                .dispatch('crud/' + self.type + '/read', { id: self.id })
+                .then(function(response) {
+                  if (!response.isError) {
+                    self.json = JSON.parse(response.response);
+                    self.raw = JSON.stringify(self.json, null, 2);
+                  }
+                });
+            } else if (metadata.format === 'xml') {
+              self.$store
+                .dispatch('crud/' + self.type + '/view', {
+                  id: self.id,
+                  view: 'indent'
+                })
+                .then(function(response) {
+                  if (!response.isError) {
+                    self.raw = response.response;
+                  }
+                });
+            }
+          }
+        });
+    },
     deleteDoc() {
       if (
         window.confirm(
@@ -216,8 +224,18 @@ export default {
           });
       }
     }
+  },
+  watch: {
+    '$route.params': {
+      handler(params) {
+        if (params) {
+          this.update();
+        }
+      },
+      deep: true
+    }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
