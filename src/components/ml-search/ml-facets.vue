@@ -5,12 +5,12 @@
     <div class="facet" v-for="(facet, facetName, $index) in facets" :key="$index"
         v-if="hasNonSelectedValues(facet)" v-show="!facet.hide">
       <h3>{{ facetName }}</h3>
-      <div v-for="(value, $index) in facet.facetValues" :key="$index" v-if="!value.selected">
+      <div class="facet-item" v-for="(value, $index) in facet.facetValues" :key="$index" v-if="!value.selected">
         <span v-on:click.prevent="toggle(facetName, facet.type, value.name)">
           <i class="fa fa-plus-circle facet-add-pos"></i>
-          <span v-if="!!value.name" :title="value.name"> {{ value.name }}</span>
-          <em v-if="!value.name">blank</em>
-          <span> ({{ value.count }}) </span>
+          <span class="value-name" v-if="!!value.name" :title="value.name"> {{ value.name }}</span>
+          <em class="value-name" v-if="!value.name">blank</em>
+          <span class="value-count"> ({{ value.count }}) </span>
         </span>
         <i v-if="!!negate" class="fa fa-ban facet-add-neg" v-on:click.prevent="negate(facetName, facet.type, value.name)" :title="value.name"></i>
       </div>
