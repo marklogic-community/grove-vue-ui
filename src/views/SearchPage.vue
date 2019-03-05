@@ -8,12 +8,14 @@
         <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
       </div>
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
+        <!-- TODO: hide spinner when search is done? -->
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
           v-on:click.prevent="$forceUpdate()"></i>
         <transition name="fade" mode="out-in">
           <h4 v-if="!results">Do a search to get results</h4>
           <h4 v-else-if="total === 0">No results to show</h4>
           <div v-else class="results">
+            <!-- TODO: pagination should go below results, but search option like snippet and sorting should remain on top.. -->
             <div class="pagination-ctrls">
               <b-pagination size="sm" v-model="page" v-on:change="pageChanged" :limit="10" boundary-links="true" :total-rows="total" :per-page="pageLength">
               </b-pagination>
