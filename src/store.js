@@ -347,6 +347,14 @@ function typedCrudState(crudType) {
         state.initialized = initialized;
       }
     },
+    getters: {
+      viewUri: (state) => (id) => {
+        return '/api/crud/' + crudType + '/' + id + '?';
+      },
+      downloadUri: (state, getters) => (id) => {
+        return getters.viewUri(id) + 'download=true';
+      }
+    },
     actions: {
       init({ commit }) {
         commit('isInitialized', { initialized: true });

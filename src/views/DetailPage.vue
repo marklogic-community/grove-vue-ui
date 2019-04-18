@@ -121,10 +121,10 @@ export default {
       return this.$store.state.auth.profile || {};
     },
     viewUri() {
-      return '/api/crud/' + this.type + '/' + this.id + '?';
+      return this.$store.getters['crud/' + this.type + '/viewUri'](this.id);
     },
     downloadUri() {
-      return this.viewUri + 'download=true';
+      return this.$store.getters['crud/' + this.type + '/downloadUri'](this.id);
     }
   },
   mounted() {
