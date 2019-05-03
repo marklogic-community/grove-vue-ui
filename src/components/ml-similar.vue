@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import SearchApi from "../api/SearchApi";
+
 export default {
   name: 'ml-similar',
   props: {
@@ -35,28 +37,20 @@ export default {
     updateSimilar() {
       if (this.uri) {
         this.loading = true;
-        // TODO: fetching similar docs needs a better middleware/backend solution
-        this.$http({
-          method: 'GET',
-          url: '/v1/resources/extsimilar',
-          params: {
-            'rs:uri': this.uri
-          },
-          auth: {
-            username: this.$store.state.auth.username,
-            password: this.$store.state.auth.password,
-            sendImmediately: true
-          }
-        }).then(
-          response => {
-            this.similar = response.data.similar;
+
+        SearchApi.getSimilar(this.uri).then(result => {
+          console.log('getSimilar',result);
+
+          if (result.response) {
+            this.similar = result.response.results;
             this.loading = false;
-          },
-          error => {
-            console.log(error);
+          } else {
+            // error
             this.loading = false;
+            return result;
           }
-        );
+        });
+
       }
     },
     resultLabel(result) {
