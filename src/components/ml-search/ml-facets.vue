@@ -14,8 +14,8 @@
         </span>
         <i v-if="!!negate" class="fa fa-ban facet-add-neg" v-on:click.prevent="negate(facetName, facet.type, value.name)" :title="value.name"></i>
       </div>
-      <div v-if="!!showMore && !facet.displayingAll">
-        <a href v-on:click.prevent="showMore(facetName)">see more ...</a>
+      <div v-if="!!showMore && !facet.displayingAll && facet.type.startsWith('xs:')">
+        <a href v-on:click.prevent="showMore(facet, facetName)">show more ...</a>
       </div>
     </div>
   </div>

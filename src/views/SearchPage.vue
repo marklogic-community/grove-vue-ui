@@ -5,7 +5,7 @@
         <ml-input :qtext="qtext" :search="search" :suggest="suggest" class="search"></ml-input>
       </div>
       <div class="col-xs-12 col-sm-4 col-md-3 facets-col">
-        <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet"></ml-facets>
+        <ml-facets v-if="facets" :facets="facets" :toggle="toggleFacet" :active-facets="activeFacets" :negate="toggleNegatedFacet" :showMore="showMore"></ml-facets>
       </div>
       <div class="col-xs-12 col-sm-8 col-md-9 results-col">
         <i class="fa fa-refresh pull-right" :class="searchPending ? 'fa-spin' : ''"
@@ -109,6 +109,16 @@ export default {
     }
   },
   methods: {
+    showMore(facet, facetName) {
+      if (facet.displayingAll) {
+        return;
+      }
+      this.$store
+        .dispatch('search/' + this.type + '/showMore', {facet, facetName})
+        .then(() => {
+          this.searchPending = false;
+        });
+    },
     toggleFacet(facet, type, value) {
       console.log('Toggle ' + facet + ' ' + type + ' ' + value);
       this.searchPending = true;
