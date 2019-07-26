@@ -1,7 +1,7 @@
 {
   "name": "@marklogic-community/grove-vue-ui",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "grove": {
     "templateID": "grove-vue-ui",
     "templateVersion": "1.0.0"
