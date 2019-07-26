@@ -1,10 +1,10 @@
 {
   "name": "@marklogic-community/grove-vue-ui",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "private": true,
   "grove": {
     "templateID": "grove-vue-ui",
-    "templateVersion": "1.0.0-rc.1"
+    "templateVersion": "1.0.0"
   },
   "scripts": {
     "serve": "vue-cli-service serve --open",
