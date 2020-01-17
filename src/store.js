@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import authApi from './api/AuthApi';
 import searchApi from './api/SearchApi';
 import crudApi from './api/CRUDApi';
+import ValuesApi from './api/ValuesApi.js';
 
 Vue.use(Vuex);
 
@@ -156,6 +157,38 @@ function typedSearchState(searchType) {
           state.facets = response.facets;
         }
       },
+      setFacetValue(state, { facetName, facets }) {
+        if (facets) {
+          let values = state.facets[facetName].facetValues;
+
+          if (facets) {
+            facets.forEach(function(newFacetValue) {
+              //check if not existing
+              for (let i = 0; i < values.length; i++) {
+                if (values[i].name === newFacetValue._value) {
+                  state.facets[facetName].displayingAll = true;
+                  return;
+                }
+              }
+              values.push({
+                name: newFacetValue._value || 'blank',
+                count: facetName.endsWith('*')?'':newFacetValue.frequency,
+                value: newFacetValue._value || ''
+              });
+            });
+          }
+
+          state.facets[facetName].facetValues = values;
+        } else {
+          state.facets[facetName].displayingAll = true;
+          return;
+        }
+      },
+      setFacetDisplayingAll(state, { facetName }) {
+        state.facets[facetName].displayingAll = true;
+        //cloning data to force UI update
+        state.facets[facetName] = {...state.facets[facetName]};
+      },
       setText(state, { qtext }) {
         if (qtext !== undefined) {
           state.qtext = qtext;
@@ -298,6 +331,21 @@ function typedSearchState(searchType) {
               return result;
             }
           });
+      },
+      showMore({ commit, state }, {facet, facetName}) {
+        let params = {};
+        let options = {};
+        ValuesApi.getValues(facetName, params, options,
+          state, state.qtext, facet).then( response => {
+          let newFacets = response.response && response.response['values-response'] && response.response['values-response']['distinct-value'];
+
+          if (newFacets) {
+            commit('setFacetValue', {facetName, facets: newFacets});
+          } else {
+            commit('setFacetDisplayingAll', {facetName});
+          }
+
+        });
       }
     },
     getters: {

@@ -229,5 +229,36 @@ export default {
         return error;
       }
     );
+  },
+  getSimilar(uri) {
+    let custom = {
+      "query": {
+        "queries": [{
+          "custom-constraint-query": {
+            "constraint-name": "similar",
+            "text": uri
+          }
+        }]
+      }
+    };
+
+    return fetch('/api/search/similar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(custom),
+      credentials: 'same-origin'
+    }).then(
+      response => {
+        return response.json().then(function(json) {
+          return { response: json };
+        });
+      },
+      error => {
+        return error;
+      }
+    );
   }
 };
